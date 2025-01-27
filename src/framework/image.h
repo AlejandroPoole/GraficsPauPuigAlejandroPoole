@@ -21,8 +21,16 @@ class Entity;
 class Camera;
 
 // A matrix of pixels
+
 class Image
 {
+
+	
+	struct Cell {
+		int min = INT_MAX;
+		int max = INT_MIN;
+	};
+	
 	// A general struct to store all the information about a TGA file
 	typedef struct sTGAInfo {
 		unsigned int width;
@@ -32,6 +40,7 @@ class Image
 	} TGAInfo;
 
 public:
+	
 	unsigned int width;
 	unsigned int height;
 	unsigned int bytes_per_pixel = 3; // Bits per pixel
@@ -78,7 +87,8 @@ public:
 	bool LoadTGA(const char* filename, bool flip_y = false);
 	bool SaveTGA(const char* filename);
 
-	void DrawRect(int x, int y, int w, int h, const Color& c);
+	void Image::DrawRect(int x, int y, int w, int h, const Color& borderColor,
+		int borderWidth, bool isFilled, const Color& fillColor);
 
 	// Used to easy code
 	#ifndef IGNORE_LAMBDAS
@@ -94,6 +104,14 @@ public:
 		return *this;
 	}
 	#endif
+
+	//DrawLine 
+	void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c);
+	void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor);
+	void Image::ScanLineDDA(int x0, int y0, int x1, int y1,std::vector<Cell>& table);
+	void Image::DrawImage(const Image& image, int x, int y);
+	void Image::DrawCircle(int x, int y, int r, const Color& borderColor,
+		int borderWidth, bool isFilled, const Color& fillColor);
 };
 
 // Image storing one float per pixel instead of a 3 or 4 component Color
