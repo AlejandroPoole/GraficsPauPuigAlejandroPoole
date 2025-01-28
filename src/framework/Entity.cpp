@@ -7,7 +7,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
 		Vector3 P1= myVertices.at(i+1);
 		Vector3 P2= myVertices.at(i+2);
 
-		int a;
+		
 
 		//Project Vector
 
