@@ -55,15 +55,16 @@ void Application::Init(void)
 	*/
 
 	//LAB2
+
 	Matrix44 mymodel;
 	Mesh* mymesh = new Mesh();
-	mymesh->LoadOBJ("..res/meshes/lee.obj");
+	mymesh->LoadOBJ("..//res/meshes/lee.obj");
 
 	entity.model = mymodel;
 	entity.mesh = mymesh;
 
 	//CREAR CAMARA
-	//myCamera.LookAt(Vector3 On esta, Vector3 On mira, Vector3 up);
+	//myCamera.LookAt(Vector3 , Vector3 On mira, Vector3 up);
 	//myCamera.SetPerspective(float FOV, float ASPECT, nearplane-- > 0.001, farplane 100);
 }
 
@@ -73,8 +74,10 @@ void Application::Render(void) {
 	//entity.Render(&framebuffer, myCamera, COlor);
 
 
-
+	
 	framebuffer.Render();
+
+	entity.Render(&framebuffer, &myCamera, Color::YELLOW);
 	/*
 	if (mode == 1) {
 		for (float i = 0; i < 2 * 3.14; i+=3.14 / 6) {
