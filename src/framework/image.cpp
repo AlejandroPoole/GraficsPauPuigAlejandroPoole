@@ -309,41 +309,18 @@ bool Image::SaveTGA(const char* filename)
 	return true;
 }
 
-void Image::DrawRect(int x, int y, int w, int h, const Color& borderColor,
-	int borderWidth, bool isFilled, const Color& fillColor){
-	
-	if (isFilled) {
-		
-		
-		for (int i = x; i < (x + w); i++)
-		{
-			for (int j = y; j < (y + h); j++)
-			{
-				SetPixel(i, j, fillColor);
-			}
-		}
+void Image::DrawRect(int x, int y, int w, int h, const Color& c)
+{
+
+	for (int i = 0; i < w; ++i) {
+		SetPixelUnsafe(x + i, y, c);
+		SetPixelUnsafe(x + i, y + h - 1, c);
 	}
 
-		for (int i = - borderWidth +1; i < w + borderWidth - 1; ++i) {
-			for (int j = 0; j < borderWidth ;++j) {
-				SetPixel(x + i, y - j , borderColor);
-				SetPixel(x + i, y + h - 1 + j, borderColor);
-				
-			}
-
-
-		}
-
-
-		for (int k = 0; k < h + borderWidth -1; ++k) {
-			for (int c = 0; c < borderWidth ;++c) {
-				SetPixel(x - c , y + k , borderColor);
-				SetPixel(x + w - 1 + c, y + k, borderColor);
-			}
-
-		}
-	
-
+	for (int j = 0; j < h; ++j) {
+		SetPixelUnsafe(x, y + j, c);
+		SetPixelUnsafe(x + w - 1, y + j, c);
+	}
 }
 
 #ifndef IGNORE_LAMBDAS
@@ -417,125 +394,3 @@ void FloatImage::Resize(unsigned int width, unsigned int height)
 	this->height = height;
 	pixels = new_pixels;
 }
-void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c) {
-	
-	float dx = x1 - x0;
-	float dy = y1 - y0;
-	int pasos = std::max(abs(dx), abs(dy));
-	float x_increment = dx / (float)pasos;
-	float y_increment = dy / (float)pasos;
-	float x_actual = x0;
-	float y_actual = y0;
-	for (int i = 0;i < pasos ;++i){
-		SetPixel(floor(x_actual), floor(y_actual), c);
-		x_actual+=x_increment;
-		y_actual+=y_increment;
-	}
-		
-	
-}
-void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor) {
-
-	
-	std::vector<Cell> table(height);
-	ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table);
-	ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table);
-	ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table);
-
-	for (int i = 0;i < table.size();++i) {
-		SetPixel(table[i].min-1, i, borderColor);
-		SetPixel(table[i].max, i, borderColor);
-		
-	}
-	if (isFilled) {
-
-
-		for (int i = 0; i < table.size();++i) {
-			if (table[i].min <= table[i].max) {
-				for (int j = table[i].min; j < table[i].max;++j) {
-					SetPixel(j, i , fillColor);
-				}
-			}
-		}
-	}
-
-	
-}
-
-void Image::ScanLineDDA(int x0, int y0, int x1, int y1,
-	std::vector<Cell>& table){
-
-	float dx = x1 - x0;
-	float dy = y1 - y0;
-	int pasos = std::max(abs(dx), abs(dy));
-	float x_increment = dx / (float)pasos;
-	float y_increment = dy / (float)pasos;
-	float x_actual = x0;
-	float y_actual = y0;
-	for (int i = 0;i < pasos;++i) {
-		int y = floor(y_actual);
-		if (y >= 0 && y < table.size()) {
-			int x = floor(x_actual);
-			Cell& cell = table[y]; 
-			if (cell.min > x) {
-				cell.min = x;
-				
-			}
-			if (cell.max < x) {
-				cell.max = x;
-			}
-		}
-		
-		x_actual += x_increment;
-		y_actual += y_increment;
-	}
-}
-
-void Image::DrawImage(const Image& image, int x, int y){
-	if((x < width) && (x>=0) && (y <= height) && (y>=0)){
-		for (int i = 0; i < image.width;++i) {
-			for (int j = 0;j < image.height;++j) {
-				Color c = image.GetPixel(i, j);
-				SetPixel(x+i, y+j, c);
-			}
-			
-		}
-	}
-}
-
-void Image::DrawCircle(int x, int y, int r, const Color& borderColor,
-	int borderWidth, bool isFilled, const Color& fillColor) {
-	int P = -r;
-	int xPlus = 0;
-	int yPlus = -r;
-	while (xPlus < -yPlus) {
-		if (P > 0) {
-			yPlus++;
-			P += 2 * (xPlus + yPlus) + 1;
-		}
-		else {
-			P += 2 * xPlus + 1;
-		}
-		SetPixel(x + xPlus, y + yPlus, borderColor);
-		SetPixel(x - xPlus, y + yPlus, borderColor);
-		SetPixel(x + xPlus, y - yPlus, borderColor);
-		SetPixel(x - xPlus, y - yPlus, borderColor);
-
-		SetPixel(x + yPlus, y + xPlus, borderColor); //esquerra
-		SetPixel(x + yPlus, y - xPlus, borderColor);
-
-		SetPixel(x - yPlus, y + xPlus, borderColor);//dreta
-		SetPixel(x - yPlus, y - xPlus, borderColor);
-		xPlus++;
-		if (isFilled) {
-			//FILL
-		}
-		
-
-	}
-}
-
-
-
-
-

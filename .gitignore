@@ -1,3 +1,6 @@
 build/*
 .vs/*
 .vscode/*
+libraries/sdl2/build-scripts/windows-buildbot-zipper.bat
+libraries/sdl2/src/atomic/SDL_atomic.c
+test.txt
