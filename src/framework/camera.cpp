@@ -1,5 +1,6 @@
 #include "camera.h"
 
+#include "application.h"
 #include "main/includes.h"
 #include <iostream>
 
@@ -87,7 +88,15 @@ void Camera::UpdateViewMatrix()
 	view_matrix.SetIdentity();
 
 	// Comment this line to create your own projection matrix!
-	SetExampleViewMatrix();
+	//SetExampleViewMatrix();
+	
+	Vector3 Forward = center-eye;
+	Vector3 Right = up.Cross(Forward);
+
+
+	view_matrix.SetFrontAndOrthonormalize(Forward); 
+	
+
 
 	// Remember how to fill a Matrix4x4 (check framework slides)
 	// Careful with the order of matrix multiplications, and be sure to use normalized vectors!
@@ -109,16 +118,26 @@ void Camera::UpdateProjectionMatrix()
 	projection_matrix.SetIdentity();
 
 	// Comment this line to create your own projection matrix!
-	SetExampleProjectionMatrix();
+	//SetExampleProjectionMatrix();
 
 	// Remember how to fill a Matrix4x4 (check framework slides)
 	
 	if (type == PERSPECTIVE) {
-		// projection_matrix.M[2][3] = -1;
-		// ...
+		float f = 1 / std::tan(fov / 2);
+		projection_matrix.m[0] = f /aspect;
+		projection_matrix.m[5] = f;
+		projection_matrix.m[10] = (far_plane+near_plane) / (near_plane-far_plane);
+		projection_matrix.m[11] = 2*far_plane*near_plane / (near_plane - far_plane);
+		projection_matrix.m[14] = -1;
+		
 	}
 	else if (type == ORTHOGRAPHIC) {
-		// ...
+		projection_matrix.m[0] = 2 / (right - left);
+		projection_matrix.m[3] = -(right+left) / (right - left);
+		projection_matrix.m[5] = 2 / (top-bottom);
+		projection_matrix.m[7] = -(top+bottom) / (top-bottom);
+		projection_matrix.m[10] = 2 / (far_plane-near_plane);
+		projection_matrix.m[11] = -(far_plane+near_plane) / (far_plane-near_plane);
 	} 
 
 	UpdateViewProjectionMatrix();

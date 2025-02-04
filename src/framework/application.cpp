@@ -62,10 +62,12 @@ void Application::Init(void)
 
 	entity.model = mymodel;
 	entity.mesh = mymesh;
-
 	//CREAR CAMARA
-	//myCamera.LookAt(Vector3 , Vector3 On mira, Vector3 up);
-	//myCamera.SetPerspective(float FOV, float ASPECT, nearplane-- > 0.001, farplane 100);
+	myCamera.LookAt({0,0,-1}, {0,0,0}, {0,1,0});
+	myCamera.SetPerspective(3.14/3, 16/9,0.001,100);
+	myCamera.type = 0;
+	//myCamera.SetOrthographic(1, 1, 2, 2, 1, 1);
+	
 }
 
 // Render one frame
