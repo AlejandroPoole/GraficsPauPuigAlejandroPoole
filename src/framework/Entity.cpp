@@ -43,5 +43,6 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
 }
 void Entity::Update(float seconds_elapsed) {
 	//model.Translate(0.01, 0, 0);
+
 	model.Rotate(PI / 6, { 0,1,0 });
 }

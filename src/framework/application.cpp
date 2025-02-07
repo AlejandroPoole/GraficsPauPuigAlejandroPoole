@@ -76,9 +76,10 @@ void Application::Init(void)
 
 	//CREAR CAMARA
 	myCamera.LookAt({0,0,-1}, {0,0,0}, {0,1,0});
-	myCamera.SetPerspective(PI/3, 16/9,0.001,100);
 	myCamera.type = 0;
-	//myCamera.SetOrthographic(1, 1, 2, 2, 1, 1);
+	myCamera.SetPerspective(PI/3, window_width/window_height,0,10000000);
+	
+	//myCamera.SetOrthographic(3, 3, 3, 3, 3, 3);
 	
 }
 
