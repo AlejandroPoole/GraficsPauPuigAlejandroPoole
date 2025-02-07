@@ -59,12 +59,24 @@ void Application::Init(void)
 	Matrix44 mymodel;
 	Mesh* mymesh = new Mesh();
 	mymesh->LoadOBJ("..//res/meshes/lee.obj");
-
 	entity.model = mymodel;
 	entity.mesh = mymesh;
+
+	//Matrix44 mymodel2;
+	//Mesh* mymesh2 = new Mesh();
+	//mymesh2->LoadOBJ("..//res/meshes/lee.obj");
+	//entity2.model = mymodel2;
+	//entity2.mesh = mymesh2;
+
+	//Matrix44 mymodel3;
+	//Mesh* mymesh3 = new Mesh();
+	//mymesh3->LoadOBJ("..//res/meshes/lee.obj");
+	//entity3.model = mymodel3;
+	//entity3.mesh = mymesh3;
+
 	//CREAR CAMARA
 	myCamera.LookAt({0,0,-1}, {0,0,0}, {0,1,0});
-	myCamera.SetPerspective(3.14/3, 16/9,0.001,100);
+	myCamera.SetPerspective(PI/3, 16/9,0.001,100);
 	myCamera.type = 0;
 	//myCamera.SetOrthographic(1, 1, 2, 2, 1, 1);
 	
@@ -76,10 +88,12 @@ void Application::Render(void) {
 	//entity.Render(&framebuffer, myCamera, COlor);
 
 
+	framebuffer.Fill(Color::BLACK);
 	
+	entity.Render(&framebuffer, &myCamera, Color::YELLOW);
+
 	framebuffer.Render();
 
-	entity.Render(&framebuffer, &myCamera, Color::YELLOW);
 	/*
 	if (mode == 1) {
 		for (float i = 0; i < 2 * 3.14; i+=3.14 / 6) {
@@ -282,7 +296,7 @@ void Application::Render(void) {
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-	if (mode == 6) {
+	/*if (mode == 6) {
 		for (int i = 0; i < ParticleSystem::MAX_PARTICLES; ++i) {
 			if (p.particles[i].inactive == false) {
 				p.particles[i].position.y += p.particles[i].velocity.y * seconds_elapsed;
@@ -294,8 +308,10 @@ void Application::Update(float seconds_elapsed)
 
 
 		}
-	}
+	}*/
 
+	//LAB2
+	entity.Update(seconds_elapsed);
 }
 
 //keyboard press event 

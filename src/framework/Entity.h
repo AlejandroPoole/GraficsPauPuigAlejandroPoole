@@ -15,6 +15,5 @@ public:
 	Entity(Matrix44 _model, Mesh* _mymesh) { mesh = _mymesh;model = _model; };
 
 	void Render(Image* framebuffer, Camera* camera, const Color& c);
-
-
+	void Update(float seconds_elapsed);
 };

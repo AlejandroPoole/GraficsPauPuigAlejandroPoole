@@ -8,6 +8,8 @@
 #include "framework.h"
 #include "image.h"
 #include "Entity.h"
+
+
 class Button {
 public:
 	Vector2 pos;
@@ -70,6 +72,8 @@ public:
 
 	//LAB2
 	Entity entity;
+	Entity entity2;
+	Entity entity3;
 	Camera myCamera;
 
 
