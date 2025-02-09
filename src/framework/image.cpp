@@ -434,60 +434,57 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c) {
 
 
 }
-void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor) {
+void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2,
+	const Color& borderColor, bool isFilled, const Color& fillColor)
+{
+	std::vector<Cell> table(height, { INT_MAX,INT_MIN });
 
-
-	std::vector<Cell> table(height);
+	// Escanear los bordes del triángulo y almacenar los valores en la tabla
 	ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table);
 	ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table);
 	ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table);
 
-	for (int i = 0;i < table.size();++i) {
-		SetPixel(table[i].min - 1, i, borderColor);
-		SetPixel(table[i].max, i, borderColor);
-
-	}
+	// Dibujar filled triangulo
 	if (isFilled) {
-
-
-		for (int i = 0; i < table.size();++i) {
-			if (table[i].min <= table[i].max) {
-				for (int j = table[i].min; j < table[i].max;++j) {
-					SetPixel(j, i, fillColor);
-				}
+		for (int i = 0; i < table.size(); i++) {
+			for (int j = table[i].min; j < table[i].max; j++) {
+				SetPixel(j, i, fillColor);
 			}
 		}
 	}
 
-
+	//Pintar los bordes del triángulo
+	DrawLineDDA(p0.x, p0.y, p1.x, p1.y, borderColor);
+	DrawLineDDA(p1.x, p1.y, p2.x, p2.y, borderColor);
+	DrawLineDDA(p2.x, p2.y, p0.x, p0.y, borderColor);
 }
 
-void Image::ScanLineDDA(int x0, int y0, int x1, int y1,
-	std::vector<Cell>& table) {
 
+void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table)
+{
+	// Calcular la distancia entre los dos puntos
 	float dx = x1 - x0;
 	float dy = y1 - y0;
-	int pasos = std::max(abs(dx), abs(dy));
-	float x_increment = dx / (float)pasos;
-	float y_increment = dy / (float)pasos;
-	float x_actual = x0;
-	float y_actual = y0;
-	for (int i = 0;i < pasos;++i) {
-		int y = floor(y_actual);
-		if (y >= 0 && y < table.size()) {
-			int x = floor(x_actual);
-			Cell& cell = table[y];
-			if (cell.min > x) {
-				cell.min = x;
 
-			}
-			if (cell.max < x) {
-				cell.max = x;
-			}
-		}
+	// Calcular el numero de pasos a realizar
+	float d = std::max(abs(dx), abs(dy));
 
-		x_actual += x_increment;
-		y_actual += y_increment;
+	// Calcular el incremento en x, y de cada paso
+	float inc_x = dx / d;
+	float inc_y = dy / d;
+
+	// Indicamos el principio del recorrido
+	float x = x0;
+	float y = y0;
+
+	// Dibujar un pixel por cada paso
+	for (int i = 0; i <= d; ++i)
+	{
+		// Actualizar minx y maxx
+		if (x < table[y].min) table[y].min = x;
+		if (x > table[y].max) table[y].max = x;
+		x += inc_x;
+		y += inc_y;
 	}
 }
 

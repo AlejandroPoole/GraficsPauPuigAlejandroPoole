@@ -21,9 +21,9 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
 		//Clip to Framebuffer Space
 
 		//Dins el cub 
-		if (P0.x >= -1 && P0.x <= 1 && P0.y >= -1 && P0.y <= 1 && P0.z >= -1 && P0.z <= 1 &&
-			P1.x >= -1 && P1.x <= 1 && P1.y >= -1 && P1.y <= 1 && P1.z >= -1 && P1.z <= 1 &&
-			P2.x >= -1 && P2.x <= 1 && P2.y >= -1 && P2.y <= 1 && P2.z >= -1 && P2.z <= 1) {
+		if (P0.x >= -1 && P0.x <= 1 && P0.y >= -1 && P0.y <= 1 && 
+			P1.x >= -1 && P1.x <= 1 && P1.y >= -1 && P1.y <= 1 &&
+			P2.x >= -1 && P2.x <= 1 && P2.y >= -1 && P2.y <= 1 ){
 			
 			//Transform to framebuffer space
 			P0.x = (P0.x + 1) * (framebuffer->width / 2);
@@ -32,7 +32,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
 			P1.y = (P1.y + 1) * (framebuffer->height / 2);
 			P2.x = (P2.x + 1) * (framebuffer->width / 2);
 			P2.y = (P2.y + 1) * (framebuffer->height / 2);
-			Vector2 P0_2D = { P0.x, P0.y };
+			Vector2 P0_2D = { P0.x, P0.y};
 			Vector2 P1_2D = { P1.x, P1.y };
 			Vector2 P2_2D = { P2.x, P2.y };
 			//Draw Triangle
@@ -41,8 +41,44 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
 		}
 	}
 }
-void Entity::Update(float seconds_elapsed) {
-	//model.Translate(0.01, 0, 0);
 
-	model.Rotate(PI / 6, { 0,1,0 });
+
+void Entity::Update(float seconds_elapsed) {
+	if (Scale<50) {
+
+		model._11 += 0.01;
+		model._22 += 0.01;
+		model._33 += 0.01;
+		Scale += 1;
+	}
+	else if (Scale>=50 && Scale<100){
+		model._11 -= 0.01;
+		model._22 -= 0.01;
+		model._33 -= 0.01;
+		Scale +=1;
+	}
+	else {
+		Scale = 0;
+	}
+}
+
+void Entity::Update2(float seconds_elapsed) {
+
+	if (goUp<50) {
+		model.Translate(0, 0.01, 0);
+		goUp += 1;
+	}
+	else if(goUp>=50 && goUp<100) {
+		model.Translate(0, -0.01, 0);
+		goUp +=1;
+	}
+	else {
+		goUp = 0;
+	}
+}
+
+void Entity::Update3(float seconds_elapsed) {
+	model.Translate(-0.5, 0, 0);
+	model.Rotate(PI / 15, { 0,1,0 });
+	model.Translate(0.5, 0, 0);
 }

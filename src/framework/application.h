@@ -51,18 +51,9 @@ public:
 	int border_width = 1;
 	Color current_color = Color::YELLOW;
 
-	int click = 0;
+	int property = 0;
 	int uniqueMouseValue = 0;
 	int mode;
-
-	bool eraser = false;
-	bool left_click = false;
-	bool pencil = false;
-	bool isActiveLine = false;
-	bool isActiveRect = false;
-	bool isActiveTriangle = false;
-	bool isActiveCircle = false;
-	bool isFilled = false;
 
 	Button buttons[17];
 	ParticleSystem p;
@@ -71,9 +62,11 @@ public:
 	// Window
 
 	//LAB2
+	
 	Entity entity;
 	Entity entity2;
 	Entity entity3;
+	Entity entity4;
 	Camera myCamera;
 
 

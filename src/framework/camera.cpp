@@ -91,12 +91,29 @@ void Camera::UpdateViewMatrix()
 	//SetExampleViewMatrix();
 	
 	Vector3 Forward = center-eye;
+
+	Forward.Normalize();
 	Vector3 Right = up.Cross(Forward);
+	Right.Normalize();
 
+	Vector3 UP = Forward.Cross(Right);
 
-	view_matrix.SetFrontAndOrthonormalize(Forward); 
-	
+	view_matrix.m[0] = Right.x;
+	view_matrix.m[1] = Right.y;
+	view_matrix.m[2] = Right.z;
+	view_matrix.m[3] = -(Right.x*eye.x + Right.y*eye.y + Right.z*eye.z);
 
+	view_matrix.m[4] = UP.x;
+	view_matrix.m[5] =UP.y;
+	view_matrix.m[6] = UP.z;
+	view_matrix.m[7] = -(UP.x * eye.x + UP.y * eye.y + UP.z * eye.z);
+
+	view_matrix.m[8] = Forward.x;
+	view_matrix.m[9] = Forward.y;
+	view_matrix.m[10] = Forward.z;
+	view_matrix.m[11] = -(Forward.x * eye.x + Forward.y * eye.y + Forward.z * eye.z);
+
+	//view_matrix.SetFrontAndOrthonormalize(Forward);
 
 	// Remember how to fill a Matrix4x4 (check framework slides)
 	// Careful with the order of matrix multiplications, and be sure to use normalized vectors!
