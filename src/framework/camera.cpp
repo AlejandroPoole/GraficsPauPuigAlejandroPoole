@@ -90,7 +90,7 @@ void Camera::UpdateViewMatrix()
 	// Comment this line to create your own projection matrix!
 	//SetExampleViewMatrix();
 	
-	Vector3 Forward = center-eye;
+	Vector3 Forward = -1*(center-eye);
 
 	Forward.Normalize();
 	Vector3 Right = up.Cross(Forward);
@@ -112,6 +112,9 @@ void Camera::UpdateViewMatrix()
 	view_matrix.m[9] = Forward.y;
 	view_matrix.m[10] = Forward.z;
 	view_matrix.m[11] = -(Forward.x * eye.x + Forward.y * eye.y + Forward.z * eye.z);
+
+
+
 
 	//view_matrix.SetFrontAndOrthonormalize(Forward);
 
@@ -144,8 +147,10 @@ void Camera::UpdateProjectionMatrix()
 		projection_matrix.m[0] = f /aspect;
 		projection_matrix.m[5] = f;
 		projection_matrix.m[10] = (far_plane+near_plane) / (near_plane-far_plane);
-		projection_matrix.m[11] = 2*far_plane*near_plane / (near_plane - far_plane);
+		projection_matrix.m[11] = 2*((far_plane*near_plane) / (near_plane - far_plane));
 		projection_matrix.m[14] = -1;
+		projection_matrix.m[15] = 1;
+		
 		
 	}
 	else if (type == ORTHOGRAPHIC) {

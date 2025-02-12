@@ -530,4 +530,62 @@ void Image::DrawCircle(int x, int y, int r, const Color& borderColor,
 
 
 	}
+
+
+}
+
+void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2,
+	const Color& c0, const Color& c1, const Color& c2)
+{	
+	std::vector<Cell> table(height, { INT_MAX,INT_MIN });
+	Vector3 p0p1 = p1-p0;
+	Vector3 p0p2 = p2 - p0;
+
+	ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table);
+	ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table);
+	ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table);
+
+	Vector3 b = p0p1.Cross(p0p2); 
+	float Area = (sqrt((b.x * b.x) + (b.y * b.y) + (b.z * b.z))) / 2;
+	for (int i = 0; i < table.size(); i++) {
+		for (int j = table[i].min; j <= table[i].max; j++) {
+			//Area A
+			Vector3 p = { (float)j,(float)i,1 };
+			Vector3 p0p = p-p0;
+			Vector3 A = p0p.Cross(p0p2);
+			float AreaA = (sqrt((A.x * A.x) + (A.y * A.y) + (A.z * A.z))) / 2;
+			//Area B
+			Vector3 p1p2 = p2 - p1;
+			Vector3 p1p = p - p1;
+			Vector3 B = p1p.Cross(p0p2);
+			float AreaB = (sqrt((B.x * B.x) + (B.y * B.y) + (B.z * B.z))) / 2;
+			//Area C
+			Vector3 C = p0p.Cross(p0p1);
+			float AreaC = (sqrt((C.x * C.x) + (C.y * C.y) + (C.z * C.z))) / 2;
+			float alpha = AreaB / Area;
+			float beta = AreaA / Area;
+			float gamma = AreaC / Area;
+			
+			float sum = alpha + beta + gamma;
+			float alphaNorm = alpha / sum;
+			float betaNorm = beta / sum;
+			float gammaNorm = gamma / sum;
+			float sumNorm = alphaNorm + betaNorm + gammaNorm;
+
+			if (round(sumNorm) == 1 && alphaNorm >= 0 && betaNorm >= 0 && gammaNorm >= 0) {
+
+
+				Color finalColor = c0 * alphaNorm + c1 * betaNorm + c2 * gammaNorm;
+				SetPixel(j, i, finalColor);
+			}
+			
+
+
+		}
+	}
+	
+	
+
+	//Pintar los bordes del triángulo
+	
 }

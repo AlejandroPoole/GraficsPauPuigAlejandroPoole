@@ -112,6 +112,8 @@ public:
 	void Image::DrawImage(const Image& image, int x, int y);
 	void Image::DrawCircle(int x, int y, int r, const Color& borderColor,
 		int borderWidth, bool isFilled, const Color& fillColor);
+	void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2,
+		const Color& c0, const Color& c1, const Color& c2);
 };
 
 // Image storing one float per pixel instead of a 3 or 4 component Color

@@ -55,13 +55,16 @@ void Application::Init(void)
 	entity2.model.Translate(-0.5,-0.3,0);
 	entity3.model.Translate(0.5, 0, 0);
 	//CREAR CAMARA
-	myCamera.LookAt({0,0,-1}, {0,0,0}, {0,1,0});
+	myCamera.eye = { 0,0,1};
+	myCamera.center = { 0,0,0 };
+	myCamera.up = { 0,1,0 };
+	
 	myCamera.type = 0;
 	
 	myCamera.far_plane = 100;
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 3;
-	
+
 	//myCamera.SetOrthographic(3, 3, 3, 3, 3, 3);
 	
 }
@@ -70,6 +73,7 @@ void Application::Init(void)
 void Application::Render(void) {
 
 	framebuffer.Fill(Color::BLACK);
+	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 
 	if (mode == 1) {
@@ -108,7 +112,7 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	switch (event.keysym.sym) {
 	case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
 	case SDLK_PLUS: if (property == 1) {
-		myCamera.near_plane += 0.02;
+		myCamera.near_plane += 0.05;
 	}
 				  else if (property == 2) {
 		myCamera.far_plane += 1;
@@ -117,8 +121,8 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 		myCamera.fov += PI/18;
 	}break;
 	case SDLK_MINUS:
-		if (property == 1 && myCamera.near_plane >0) {
-			myCamera.near_plane -= 1;
+		if (property == 1 ) {
+			myCamera.near_plane -= 0.05;
 		}
 		else if (property == 2 && myCamera.far_plane>0) {
 			myCamera.far_plane -= 1;
@@ -142,19 +146,35 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 void Application::OnMouseButtonDown(SDL_MouseButtonEvent event) {
 
 	if (event.button == SDL_BUTTON_LEFT) {
+		click = true;
 	}
 }
 
 void Application::OnMouseButtonUp(SDL_MouseButtonEvent event)
 {
 	if (event.button == SDL_BUTTON_LEFT) {
-
+		click = false;
 	}
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
-
+	if (click) {
+		mouse_position.normalize();
+	
+		if (mouse_delta.x < 0) {
+			myCamera.eye.x += mouse_position.x/100;
+		}
+		else if (mouse_delta.x ==0) {
+			
+			myCamera.eye.x -= mouse_position.x/100;
+		}
+		
+		
+		
+		
+		
+	}
 }
 
 void Application::OnWheel(SDL_MouseWheelEvent event)

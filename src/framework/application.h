@@ -68,6 +68,7 @@ public:
 	Entity entity3;
 	Entity entity4;
 	Camera myCamera;
+	bool click = false;
 
 
 	SDL_Window* window = nullptr;
