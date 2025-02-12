@@ -113,7 +113,7 @@ public:
 	void Image::DrawCircle(int x, int y, int r, const Color& borderColor,
 		int borderWidth, bool isFilled, const Color& fillColor);
 	void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2,
-		const Color& c0, const Color& c1, const Color& c2);
+		const Color& c0, const Color& c1, const Color& c2, FloatImage* zbuffer);
 };
 
 // Image storing one float per pixel instead of a 3 or 4 component Color

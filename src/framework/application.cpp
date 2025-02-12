@@ -64,7 +64,7 @@ void Application::Init(void)
 	myCamera.far_plane = 100;
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 3;
-
+	
 	//myCamera.SetOrthographic(3, 3, 3, 3, 3, 3);
 	
 }
@@ -77,12 +77,12 @@ void Application::Render(void) {
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 
 	if (mode == 1) {
-		entity4.Render(&framebuffer, &myCamera, Color::WHITE);
+		entity4.Render(&framebuffer, &myCamera, &zBuffer);
 	}
 	else if (mode == 2) {
-		entity.Render(&framebuffer, &myCamera, Color::WHITE);
-		entity2.Render(&framebuffer, &myCamera, Color::GREEN);
-		entity3.Render(&framebuffer, &myCamera, Color::BLUE);
+		entity.Render(&framebuffer, &myCamera, &zBuffer);
+		entity2.Render(&framebuffer, &myCamera,&zBuffer);
+		entity3.Render(&framebuffer, &myCamera,&zBuffer);
 	}
 
 	framebuffer.Render();
@@ -165,7 +165,7 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 		if (mouse_delta.x < 0) {
 			myCamera.eye.x += mouse_position.x/100;
 		}
-		else if (mouse_delta.x ==0) {
+		else if (mouse_delta.x >0) {
 			
 			myCamera.eye.x -= mouse_position.x/100;
 		}

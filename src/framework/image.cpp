@@ -535,7 +535,7 @@ void Image::DrawCircle(int x, int y, int r, const Color& borderColor,
 }
 
 void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2,
-	const Color& c0, const Color& c1, const Color& c2)
+	const Color& c0, const Color& c1, const Color& c2, FloatImage* zbuffer)
 {	
 	std::vector<Cell> table(height, { INT_MAX,INT_MIN });
 	Vector3 p0p1 = p1-p0;
@@ -547,8 +547,13 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 
 	Vector3 b = p0p1.Cross(p0p2); 
 	float Area = (sqrt((b.x * b.x) + (b.y * b.y) + (b.z * b.z))) / 2;
+
+	
+
 	for (int i = 0; i < table.size(); i++) {
 		for (int j = table[i].min; j <= table[i].max; j++) {
+
+			
 			//Area A
 			Vector3 p = { (float)j,(float)i,1 };
 			Vector3 p0p = p-p0;
@@ -571,9 +576,9 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 			float betaNorm = beta / sum;
 			float gammaNorm = gamma / sum;
 			float sumNorm = alphaNorm + betaNorm + gammaNorm;
-
-			if (round(sumNorm) == 1 && alphaNorm >= 0 && betaNorm >= 0 && gammaNorm >= 0) {
-
+			float zDepth = p1.z * alphaNorm + betaNorm * p0.z + p2.z * gammaNorm;
+			printf("%f", zDepth);
+			if (round(sumNorm) == 1 && alphaNorm >= 0 && betaNorm >= 0 && gammaNorm >= 0 && zbuffer->pixels[i*width +j] > zDepth) {
 
 				Color finalColor = c0 * alphaNorm + c1 * betaNorm + c2 * gammaNorm;
 				SetPixel(j, i, finalColor);

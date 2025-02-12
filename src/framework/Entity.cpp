@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
+void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
 	const std::vector<Vector3> myVertices = mesh->GetVertices();
 
 	bool negZ = false;
@@ -31,13 +31,13 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
 			P1.y = (P1.y + 1) * (framebuffer->height / 2);
 			P2.x = (P2.x + 1) * (framebuffer->width / 2);
 			P2.y = (P2.y + 1) * (framebuffer->height / 2);
-			Vector3 P0_2D = { P0.x, P0.y,0};
-			Vector3 P1_2D = { P1.x, P1.y, 0 };
-			Vector3 P2_2D = { P2.x, P2.y ,0};
+			Vector3 P0_2D = { P0.x, P0.y,P0.z};
+			Vector3 P1_2D = { P1.x, P1.y,P1.z};
+			Vector3 P2_2D = { P2.x, P2.y ,P2.z};
 			//Draw Triangle
 			
 			//framebuffer->DrawTriangle(P0_2D, P1_2D, P2_2D, c, true, c);
-			framebuffer->DrawTriangleInterpolated(P0_2D, P1_2D, P2_2D, Color::GREEN, Color::RED, Color::BLUE);
+			framebuffer->DrawTriangleInterpolated(P0_2D, P1_2D, P2_2D, Color::GREEN, Color::RED, Color::BLUE, zBuffer);
 		}
 		
 	}

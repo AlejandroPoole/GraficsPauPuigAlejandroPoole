@@ -19,7 +19,7 @@ public:
 	Entity() {};
 	Entity(Matrix44 _model, Mesh* _mymesh) { mesh = _mymesh;model = _model; };
 
-	void Render(Image* framebuffer, Camera* camera, const Color& c);
+	void Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer);
 	void Update(float seconds_elapsed);
 	void Update2(float seconds_elapsed);
 	void Update3(float seconds_elapsed);
