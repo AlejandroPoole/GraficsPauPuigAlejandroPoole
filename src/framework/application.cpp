@@ -55,18 +55,18 @@ void Application::Init(void)
 	entity2.model.Translate(-0.5,-0.3,0);
 	entity3.model.Translate(0.5, 0, 0);
 	//CREAR CAMARA
-	myCamera.eye = { 0,0,1};
+	myCamera.eye = { 0,0,1.3};
 	myCamera.center = { 0,0,0 };
 	myCamera.up = { 0,1,0 };
 	
 	myCamera.type = 0;
 	
-	myCamera.far_plane = 100;
+	myCamera.far_plane = 5;
 	myCamera.near_plane = 0.01;
-	myCamera.fov = PI / 3;
+	myCamera.fov = PI / 4;
 	zBuffer.Fill(INT_MAX);
 	//myCamera.SetOrthographic(3, 3, 3, 3, 3, 3);
-	
+	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 }
 
 // Render one frame
@@ -76,9 +76,9 @@ void Application::Render(void) {
 	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 
-	if (mode == 1) {
-		entity4.Render(&framebuffer, &myCamera, &zBuffer);
-	}
+	
+	if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer); }
+	
 	else if (mode == 2) {
 		entity.Render(&framebuffer, &myCamera, &zBuffer);
 		entity2.Render(&framebuffer, &myCamera,&zBuffer);
@@ -112,7 +112,7 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	switch (event.keysym.sym) {
 	case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
 	case SDLK_PLUS: if (property == 1) {
-		myCamera.near_plane += 0.05;
+		myCamera.near_plane += 0.01;
 	}
 				  else if (property == 2) {
 		myCamera.far_plane += 1;
@@ -122,7 +122,7 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	}break;
 	case SDLK_MINUS:
 		if (property == 1 ) {
-			myCamera.near_plane -= 0.05;
+			myCamera.near_plane -= 0.01;
 		}
 		else if (property == 2 && myCamera.far_plane>0) {
 			myCamera.far_plane -= 1;

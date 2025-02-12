@@ -90,28 +90,18 @@ void Camera::UpdateViewMatrix()
 	// Comment this line to create your own projection matrix!
 	//SetExampleViewMatrix();
 	
-	Vector3 Forward = -1*(center-eye);
+	Vector3 Forward = { -(center.x - eye.x), -(center.y-eye.y),-(center.z-eye.z) };
 
 	Forward.Normalize();
+	
 	Vector3 Right = up.Cross(Forward);
 	Right.Normalize();
 
 	Vector3 UP = Forward.Cross(Right);
+	UP.Normalize();
 
-	view_matrix.m[0] = Right.x;
-	view_matrix.m[1] = Right.y;
-	view_matrix.m[2] = Right.z;
-	view_matrix.m[3] = -(Right.x*eye.x + Right.y*eye.y + Right.z*eye.z);
+	view_matrix.Set(Right.x, Right.y, Right.z, -Right.Dot(eye), UP.x, UP.y, UP.z, -UP.Dot(eye), Forward.x, Forward.y, Forward.z, -Forward.Dot(eye), 0, 0, 0, 1);
 
-	view_matrix.m[4] = UP.x;
-	view_matrix.m[5] =UP.y;
-	view_matrix.m[6] = UP.z;
-	view_matrix.m[7] = -(UP.x * eye.x + UP.y * eye.y + UP.z * eye.z);
-
-	view_matrix.m[8] = Forward.x;
-	view_matrix.m[9] = Forward.y;
-	view_matrix.m[10] = Forward.z;
-	view_matrix.m[11] = -(Forward.x * eye.x + Forward.y * eye.y + Forward.z * eye.z);
 
 
 
@@ -124,8 +114,6 @@ void Camera::UpdateViewMatrix()
 	// Create the view matrix rotation
 	// ...
 	// view_matrix.M[3][3] = 1.0;
-
-	// Translate view matrix
 	// ...
 
 	UpdateViewProjectionMatrix();
@@ -141,25 +129,17 @@ void Camera::UpdateProjectionMatrix()
 	//SetExampleProjectionMatrix();
 
 	// Remember how to fill a Matrix4x4 (check framework slides)
-	
+
 	if (type == PERSPECTIVE) {
 		float f = 1 / std::tan(fov / 2);
-		projection_matrix.m[0] = f /aspect;
-		projection_matrix.m[5] = f;
-		projection_matrix.m[10] = (far_plane+near_plane) / (near_plane-far_plane);
-		projection_matrix.m[11] = 2*((far_plane*near_plane) / (near_plane - far_plane));
-		projection_matrix.m[14] = -1;
-		projection_matrix.m[15] = 1;
+		
+		projection_matrix.Set(f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far_plane + near_plane) / (near_plane - far_plane), (2 * far_plane * near_plane) / (near_plane - far_plane), 0, 0, -1, 0);
+		
 		
 		
 	}
 	else if (type == ORTHOGRAPHIC) {
-		projection_matrix.m[0] = 2 / (right - left);
-		projection_matrix.m[3] = -(right+left) / (right - left);
-		projection_matrix.m[5] = 2 / (top-bottom);
-		projection_matrix.m[7] = -(top+bottom) / (top-bottom);
-		projection_matrix.m[10] = 2 / (far_plane-near_plane);
-		projection_matrix.m[11] = -(far_plane+near_plane) / (far_plane-near_plane);
+		
 	} 
 
 	UpdateViewProjectionMatrix();
