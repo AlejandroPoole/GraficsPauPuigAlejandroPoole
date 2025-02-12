@@ -20,8 +20,8 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
 		//Clip to Framebuffer Space
 		
 		//Dins el cub 
-		if (P0.x >= -1 && P0.x <= 1 && P0.y >= -1 && P0.y <= 1 && //P0.z <= 1 && P0.z >= -1 && P1.z <= 1 &&
-			P1.x >= -1 && P1.x <= 1 && P1.y >= -1 && P1.y <= 1 && //P2.z >= -1 && P1.z >= -1 && P2.z <= 1 &&
+		if (P0.x >= -1 && P0.x <= 1 && P0.y >= -1 && P0.y <= 1 && P0.z <= 1 && P0.z >= -1 && P1.z <= 1 &&
+			P1.x >= -1 && P1.x <= 1 && P1.y >= -1 && P1.y <= 1 && P2.z >= -1 && P1.z >= -1 && P2.z <= 1 &&
 			P2.x >= -1 && P2.x <= 1 && P2.y >= -1 && P2.y <= 1 ){
 			
 			//Transform to framebuffer space

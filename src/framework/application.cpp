@@ -64,7 +64,7 @@ void Application::Init(void)
 	myCamera.far_plane = 100;
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 3;
-	
+	zBuffer.Fill(INT_MAX);
 	//myCamera.SetOrthographic(3, 3, 3, 3, 3, 3);
 	
 }
