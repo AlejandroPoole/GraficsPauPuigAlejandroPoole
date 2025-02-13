@@ -52,7 +52,7 @@ void Application::Init(void)
 	entity4.mesh = mymesh4;
 	
 	Image *mytexture = new Image();
-	mytexture->LoadTGA("..//res/textures/lee_normal.tga", false);
+	mytexture->LoadTGA("..//res/textures/lee_color_specular.tga",true);
 	entity4.texture = mytexture;
 	
 
@@ -177,23 +177,23 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 		//Horizontal
 		if (mouse_delta.x > 0) {
 			
-			myCamera.eye.x += mouse_delta.x / 1500;
+			myCamera.center.x += mouse_delta.x / 1500;
 			
 		}
 		else if (mouse_delta.x < 0) {
 			
-			myCamera.eye.x += mouse_delta.x / 1500;
+			myCamera.center.x += mouse_delta.x / 1500;
 
 			
 		}
 		//Vertical
 		if (mouse_delta.y > 0 ) {
 			
-			myCamera.eye.y += mouse_delta.y / 1500;
+			myCamera.center.y += mouse_delta.y / 1500;
 		}
 		else if (mouse_delta.y < 0 ) {
 			
-			myCamera.eye.y += mouse_delta.y/ 1500;
+			myCamera.center.y += mouse_delta.y/ 1500;
 		}
 
 

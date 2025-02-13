@@ -542,6 +542,7 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 	ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table);
 	ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table);
 	ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table);
+	
 
 	Vector3 p0p1 = p1 - p0;
 	Vector3 p1p2 = p2 - p1;
@@ -591,7 +592,8 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 					}
 					else {
 						Vector2 uv = (uv0 * alphaNorm) + (uv1 * betaNorm) + (uv2 * gammaNorm);
-						SetPixel(j, i, texture->GetPixel(uv.x, uv.y));
+						
+						SetPixel(j, i, texture->GetPixel(uv.x*(texture->width-1), uv.y*(texture->height-1)));
 					}
 					
 				}

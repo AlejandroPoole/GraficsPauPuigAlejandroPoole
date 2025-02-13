@@ -41,13 +41,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
 			Vector3 P2_2D = { P2.x, P2.y, P2.z};
 			//Draw Triangle
 
-			uv0.x = uv0.x * (framebuffer->width - 1);
-			uv1.x = uv1.x * (framebuffer->width - 1);
-			uv2.x = uv2.x * (framebuffer->width - 1);
-
-			uv0.y = uv0.y * (framebuffer->height - 1);
-			uv1.y = uv1.y * (framebuffer->height - 1);
-			uv2.y = uv2.y * (framebuffer->height - 1);
+			
 
 
 			//framebuffer->DrawTriangle(P0_2D, P1_2D, P2_2D, Color::GREEN, false, Color::BLUE);
