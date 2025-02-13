@@ -538,60 +538,57 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 	const Color& c0, const Color& c1, const Color& c2, FloatImage* zbuffer)
 {	
 	std::vector<Cell> table(height, { INT_MAX,INT_MIN });
-	Vector3 p0p1 = p1-p0;
-	Vector3 p0p2 = p2 - p0;
-
+	
 	ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table);
 	ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table);
 	ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table);
 
-	Vector3 b = p0p1.Cross(p0p2); 
-	float Area = (sqrt((b.x * b.x) + (b.y * b.y) + (b.z * b.z))) / 2;
-
+	Vector3 p0p1 = p1 - p0;
+	Vector3 p1p2 = p2 - p1;
+	Vector3 p2p0 = p0 - p2;
+	Vector3 p0p2 = p2 - p0;
 	
 
 	for (int i = 0; i < table.size(); i++) {
 		for (int j = table[i].min; j <= table[i].max; j++) {
 
-			
-			//Area A
 			Vector3 p = { (float)j,(float)i,1 };
-			Vector3 p0p = p-p0;
-			Vector3 A = p0p.Cross(p0p2);
-			float AreaA = A.Length();
-			//Area B
-			Vector3 p1p2 = p2 - p1;
-			Vector3 p1p = p - p1;
-			Vector3 B = p1p.Cross(p0p2);
-			float AreaB = B.Length();
-			//Area C
-			Vector3 C = p0p.Cross(p0p1);
-			float AreaC = C.Length();
-			float alpha = AreaB / Area;
-			float beta = AreaA / Area;
-			float gamma = AreaC / Area;
+
+			Vector3 pp0 = p0 - p;
+			Vector3 pp1 = p1 - p;
+			Vector3 pp2 = p2 - p;
 			
+			//Area total
+			float Area = (p0p1.Cross(p0p2)).Length() / 2;
+
+			//Area AP0	
+			float AreaAP0 = (pp1.Cross(pp2)).Length() / 2;
+			
+			//Area AP1
+			float AreaAP1 = (pp2.Cross(pp0)).Length() / 2;
+			
+			//Area AP2
+			float AreaAP2 = (pp0.Cross(pp1)).Length() / 2;
+			
+			float alpha = AreaAP0 / Area;
+			float beta = AreaAP1 / Area;
+			float gamma = AreaAP2 / Area;
+		
 			float sum = alpha + beta + gamma;
 			float alphaNorm = alpha / sum;
 			float betaNorm = beta / sum;
 			float gammaNorm = gamma / sum;
 			float sumNorm = alphaNorm + betaNorm + gammaNorm;
 
-			if (round(sumNorm) == 1 && alpha >= 0 && beta >= 0 && gamma >= 0) {
-				float zDepth = (p0.z * alpha) + (beta * p1.z) + (p2.z * gamma);
-
-				if ((zbuffer->GetPixel(j, i) > zDepth)) {
-
-					Color finalColor = c0 * alphaNorm + c1 * betaNorm + c2 * gammaNorm;
-					SetPixel(j, i, finalColor);
-
-					//zbuffer->SetPixel(j, i, zDepth);
-
-				}
+			if (round(sumNorm) == 1 && alphaNorm >= 0 && alphaNorm <=1 && betaNorm >= 0 && betaNorm <= 1 && gammaNorm >= 0 && gammaNorm <= 1) {
+				float zDepth = (p0.z * alphaNorm) + (p1.z * betaNorm) + (p2.z * gammaNorm);
+				Color finalColor = c0 * alphaNorm + c1 * betaNorm + c2 * gammaNorm;
+				SetPixel(j, i, finalColor);/*
+				if ((zbuffer->GetPixel(j,i) > zDepth)) {
+					zbuffer->SetPixel(j, i, zDepth);
+					
+				}*/
 			}
-			
-			
 		}
 	}
-	
 }

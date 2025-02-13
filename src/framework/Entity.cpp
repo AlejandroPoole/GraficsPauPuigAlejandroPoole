@@ -34,13 +34,13 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
 			P1.y = (P1.y + 1) * (framebuffer->height / 2);
 			P2.x = (P2.x + 1) * (framebuffer->width / 2);
 			P2.y = (P2.y + 1) * (framebuffer->height / 2);
-			Vector2 P0_2D = { P0.x, P0.y};
-			Vector2 P1_2D = { P1.x, P1.y};
-			Vector2 P2_2D = { P2.x, P2.y};
+			Vector3 P0_2D = { P0.x, P0.y, P0.z};
+			Vector3 P1_2D = { P1.x, P1.y, P1.z};
+			Vector3 P2_2D = { P2.x, P2.y, P2.z};
 			//Draw Triangle
 			
-			framebuffer->DrawTriangle(P0_2D, P1_2D, P2_2D, Color::GREEN, false, Color::BLUE);
-			//framebuffer->DrawTriangleInterpolated(P0_2D, P1_2D, P2_2D, Color::GREEN, Color::RED, Color::BLUE, zBuffer);
+			//framebuffer->DrawTriangle(P0_2D, P1_2D, P2_2D, Color::GREEN, false, Color::BLUE);
+			framebuffer->DrawTriangleInterpolated(P0_2D, P1_2D, P2_2D, Color::GREEN, Color::RED, Color::BLUE, zBuffer);
 		}
 		
 	}
