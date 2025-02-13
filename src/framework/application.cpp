@@ -2,6 +2,7 @@
 #include "mesh.h"
 #include "shader.h"
 #include "utils.h" 
+#include "Entity.h"
 
 Application::Application(const char* caption, int width, int height)
 {
@@ -55,8 +56,8 @@ void Application::Init(void)
 	mytexture->LoadTGA("..//res/textures/lee_color_specular.tga",true);
 	entity4.texture = mytexture;
 	
-
-
+	entity4.n = entity4.texture;
+	entity4.zbufferTemp = &zBuffer;
 	entity2.model.Translate(-0.5,-0.3,0);
 	entity3.model.Translate(0.5, 0, 0);
 	//CREAR CAMARA
@@ -89,12 +90,12 @@ void Application::Render(void) {
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 
 	
-	if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer); }
+	if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV); }
 	
 	else if (mode == 2) {
-		entity.Render(&framebuffer, &myCamera, &zBuffer);
-		entity2.Render(&framebuffer, &myCamera,&zBuffer);
-		entity3.Render(&framebuffer, &myCamera,&zBuffer);
+		entity.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn, InterpolatedUV);
+		entity2.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn,InterpolatedUV);
+		entity3.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn, InterpolatedUV);
 	}
 
 	framebuffer.Render();
@@ -144,14 +145,12 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 		}break;
 	case SDLK_1: mode = 1; break;
 	case SDLK_2: mode = 2; break;
-	case SDLK_3: mode = 3; break;
-	case SDLK_4: mode = 4; break;
-	case SDLK_5: mode = 5; break;
-	case SDLK_6: mode = 6; break;
 	case SDLK_n: property = 1; break;
 	case SDLK_f: property = 2;break;
 	case SDLK_v: property= 3;break;
-
+	case SDLK_t: entity4.textureOn = !entity4.textureOn;break;
+	case SDLK_z: zBufferOn =!zBufferOn;break;
+	case SDLK_c: InterpolatedUV = !InterpolatedUV;break;
 	}
 }
 
@@ -160,6 +159,9 @@ void Application::OnMouseButtonDown(SDL_MouseButtonEvent event) {
 	if (event.button == SDL_BUTTON_LEFT) {
 		click = true;
 	}
+	if (event.button == SDL_BUTTON_RIGHT) {
+		click2 = true;
+	}
 }
 
 void Application::OnMouseButtonUp(SDL_MouseButtonEvent event)
@@ -167,41 +169,45 @@ void Application::OnMouseButtonUp(SDL_MouseButtonEvent event)
 	if (event.button == SDL_BUTTON_LEFT) {
 		click = false;
 	}
+	if (event.button == SDL_BUTTON_RIGHT) {
+		click2 = false;
+	}
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
 	if (click) {
-		
-		
+		//EYE
 		//Horizontal
 		if (mouse_delta.x > 0) {
-			
-			myCamera.center.x += mouse_delta.x / 1500;
-			
+			myCamera.eye.x += mouse_delta.x / 500;
 		}
 		else if (mouse_delta.x < 0) {
-			
-			myCamera.center.x += mouse_delta.x / 1500;
-
-			
+			myCamera.eye.x += mouse_delta.x / 500;
 		}
 		//Vertical
 		if (mouse_delta.y > 0 ) {
-			
-			myCamera.center.y += mouse_delta.y / 1500;
+			myCamera.eye.y += mouse_delta.y / 500;
 		}
 		else if (mouse_delta.y < 0 ) {
-			
-			myCamera.center.y += mouse_delta.y/ 1500;
+			myCamera.eye.y += mouse_delta.y/ 500;
 		}
-
-
-		
-		
-		
-		
-		
+	}
+	//CENTER
+	else if (click2) {
+		if (mouse_delta.x > 0) {
+			myCamera.center.x += mouse_delta.x / 500;
+		}
+		else if (mouse_delta.x < 0) {
+			myCamera.center.x += mouse_delta.x / 500;
+		}
+		//Vertical
+		if (mouse_delta.y > 0) {
+			myCamera.center.y -= mouse_delta.y / 500;
+		}
+		else if (mouse_delta.y < 0) {
+			myCamera.center.y -= mouse_delta.y / 500;
+		}
 	}
 }
 

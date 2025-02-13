@@ -7,6 +7,9 @@
 #include "image.h"
 
 
+
+
+
 class Entity {
 
 
@@ -16,12 +19,17 @@ public:
 	Mesh* mesh;
 	Matrix44 model;
 	Image* texture;
+	
+	Image* n;
+	bool textureOn = false;
+	FloatImage* zbufferTemp;
 
 	Entity() {};
 	Entity(Matrix44 _model, Mesh* _mymesh) { mesh = _mymesh;model = _model; };
 
-	void Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer);
+	void Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer, bool zbufferOn, bool InterpolatedUV);
 	void Update(float seconds_elapsed);
 	void Update2(float seconds_elapsed);
 	void Update3(float seconds_elapsed);
 };
+

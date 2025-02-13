@@ -452,11 +452,13 @@ void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2
 			}
 		}
 	}
-
+	if (!isFilled) {
+		DrawLineDDA(p0.x, p0.y, p1.x, p1.y, borderColor);
+		DrawLineDDA(p1.x, p1.y, p2.x, p2.y, borderColor);
+		DrawLineDDA(p2.x, p2.y, p0.x, p0.y, borderColor);
+	}
 	//Pintar los bordes del triángulo
-	DrawLineDDA(p0.x, p0.y, p1.x, p1.y, borderColor);
-	DrawLineDDA(p1.x, p1.y, p2.x, p2.y, borderColor);
-	DrawLineDDA(p2.x, p2.y, p0.x, p0.y, borderColor);
+	
 }
 
 
@@ -579,10 +581,23 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 			float betaNorm = beta / sum;
 			float gammaNorm = gamma / sum;
 			float sumNorm = alphaNorm + betaNorm + gammaNorm;
-
+		
 			if (round(sumNorm) == 1 && alphaNorm >= 0 && betaNorm >= 0 && gammaNorm >= 0) {
 				float zDepth = (p0.z * alphaNorm) + (p1.z * betaNorm) + (p2.z * gammaNorm);
-				if ((zbuffer->GetPixel(j, i) > zDepth)) {
+				if (zbuffer == NULL) {
+					if (texture == nullptr) {
+
+						Color c = (c0 * alphaNorm) + (c1 * betaNorm) + (c2 * gammaNorm);
+						SetPixel(j, i, c);
+					}
+					else {
+						Vector2 uv = (uv0 * alphaNorm) + (uv1 * betaNorm) + (uv2 * gammaNorm);
+
+						SetPixel(j, i, texture->GetPixel(uv.x * (texture->width - 1), uv.y * (texture->height - 1)));
+					}
+					
+				}
+				else if ((zbuffer->GetPixel(j, i) > zDepth )) {
 					zbuffer->SetPixel(j, i, zDepth);
 
 					if (texture == nullptr) {
@@ -598,6 +613,7 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 					
 				}
 			}
+
 		}
 	}
 }

@@ -10,6 +10,7 @@
 #include "Entity.h"
 
 
+
 class Button {
 public:
 	Vector2 pos;
@@ -70,7 +71,9 @@ public:
 	Camera myCamera;
 	bool click = false;
 	FloatImage zBuffer;
-	
+	bool InterpolatedUV = false;
+	bool zBufferOn = false;
+	bool click2 = false;
 	
 
 

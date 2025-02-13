@@ -1,6 +1,7 @@
 #include "Entity.h"
 
-void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
+
+void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer,bool zbufferOn, bool InterpolatedUV) {
 	const std::vector<Vector3> myVertices = mesh->GetVertices();
 	const std::vector<Vector2> UVs = mesh->GetUVs();
 	bool negZ = false;
@@ -43,9 +44,33 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
 
 			
 
+			
+			
+			if (!textureOn) {
+				texture = NULL;
+			}
+			else if (textureOn) {
+				texture = n;
+			}
 
-			//framebuffer->DrawTriangle(P0_2D, P1_2D, P2_2D, Color::GREEN, false, Color::BLUE);
-			framebuffer->DrawTriangleInterpolated(P0_2D, P1_2D, P2_2D, Color::GREEN, Color::RED, Color::BLUE, zBuffer,texture, uv0, uv1, uv2);
+			if (zbufferOn) {
+				zBuffer = NULL;
+			}
+			else {
+				zBuffer = zbufferTemp;
+			}
+
+			if (InterpolatedUV) {
+				framebuffer->DrawTriangleInterpolated(P0_2D, P1_2D, P2_2D, Color::GREEN, Color::RED, Color::BLUE, zBuffer, texture, uv0, uv1, uv2);
+
+			}
+			else if (!InterpolatedUV) {
+				framebuffer->DrawTriangle({ P0_2D.x, P0_2D.y }, { P1_2D.x, P1_2D.y }, { P2_2D.x, P2_2D.y }, Color::GREEN, true, Color::BLUE); 
+
+			}
+			
+
+			
 		}
 		
 	}

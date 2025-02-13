@@ -100,12 +100,27 @@ void Camera::UpdateViewMatrix()
 	Vector3 UP = Forward.Cross(Right);
 	UP.Normalize();
 
-	view_matrix.Set(Right.x, Right.y, Right.z, -Right.Dot(eye), UP.x, UP.y, UP.z, -UP.Dot(eye), Forward.x, Forward.y, Forward.z, -Forward.Dot(eye), 0, 0, 0, 1);
-
 	
 
+	view_matrix.m[0] = Right.x;  
+	view_matrix.m[1] = UP.x;
+	view_matrix.m[2] = Forward.x;
+	view_matrix.m[3] = 0;
 
+	view_matrix.m[4] = Right.y;
+	view_matrix.m[5] = UP.y;
+	view_matrix.m[6] = Forward.y;
+	view_matrix.m[7] = 0;
 
+	view_matrix.m[8] = Right.z;
+	view_matrix.m[9] = UP.z;
+	view_matrix.m[10] = Forward.z;
+	view_matrix.m[11] = 0;
+
+	view_matrix.m[12] = -Right.Dot(eye);
+	view_matrix.m[13] = -UP.Dot(eye);
+	view_matrix.m[14] = -Forward.Dot(eye);
+	view_matrix.m[15] = 1;
 	//view_matrix.SetFrontAndOrthonormalize(Forward);
 
 	// Remember how to fill a Matrix4x4 (check framework slides)
