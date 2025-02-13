@@ -50,6 +50,11 @@ void Application::Init(void)
 	mymesh4->LoadOBJ("..//res/meshes/lee.obj");
 	entity4.model = mymodel4;
 	entity4.mesh = mymesh4;
+	
+	Image *mytexture = new Image();
+	mytexture->LoadTGA("..//res/textures/lee_normal.tga", false);
+	entity4.texture = mytexture;
+	
 
 
 	entity2.model.Translate(-0.5,-0.3,0);
@@ -172,23 +177,23 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 		//Horizontal
 		if (mouse_delta.x > 0) {
 			
-			myCamera.center.x += mouse_delta.x / 2000;
+			myCamera.eye.x += mouse_delta.x / 1500;
 			
 		}
 		else if (mouse_delta.x < 0) {
 			
-			myCamera.center.x += mouse_delta.x / 2000;
+			myCamera.eye.x += mouse_delta.x / 1500;
 
 			
 		}
 		//Vertical
 		if (mouse_delta.y > 0 ) {
 			
-			myCamera.eye.y += mouse_delta.y / 2000;
+			myCamera.eye.y += mouse_delta.y / 1500;
 		}
 		else if (mouse_delta.y < 0 ) {
 			
-			myCamera.eye.y += mouse_delta.y/ 2000;
+			myCamera.eye.y += mouse_delta.y/ 1500;
 		}
 
 

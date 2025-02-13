@@ -535,7 +535,7 @@ void Image::DrawCircle(int x, int y, int r, const Color& borderColor,
 }
 
 void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2,
-	const Color& c0, const Color& c1, const Color& c2, FloatImage* zbuffer)
+	const Color& c0, const Color& c1, const Color& c2, FloatImage* zbuffer, Image* texture, const Vector2& uv0, const Vector2& uv1, const Vector2& uv2)
 {	
 	std::vector<Cell> table(height, { INT_MAX,INT_MIN });
 	
@@ -548,7 +548,6 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 	Vector3 p2p0 = p0 - p2;
 	Vector3 p0p2 = p2 - p0;
 	
-
 	for (int i = 0; i < table.size(); i++) {
 		for (int j = table[i].min; j <= table[i].max; j++) {
 
@@ -584,8 +583,17 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 				float zDepth = (p0.z * alphaNorm) + (p1.z * betaNorm) + (p2.z * gammaNorm);
 				if ((zbuffer->GetPixel(j, i) > zDepth)) {
 					zbuffer->SetPixel(j, i, zDepth);
-					Color c = (c0 * alphaNorm) + (c1 * betaNorm) + (c2 * gammaNorm);
-					SetPixel(j, i, c);
+
+					if (texture == nullptr) {
+						
+						Color c = (c0 * alphaNorm) + (c1 * betaNorm) + (c2 * gammaNorm);
+						SetPixel(j, i, c);
+					}
+					else {
+						Vector2 uv = (uv0 * alphaNorm) + (uv1 * betaNorm) + (uv2 * gammaNorm);
+						SetPixel(j, i, texture->GetPixel(uv.x, uv.y));
+					}
+					
 				}
 			}
 		}

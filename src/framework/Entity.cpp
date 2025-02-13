@@ -2,7 +2,7 @@
 
 void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
 	const std::vector<Vector3> myVertices = mesh->GetVertices();
-
+	const std::vector<Vector2> UVs = mesh->GetUVs();
 	bool negZ = false;
 	for (int i = 0; i < myVertices.size()-2;i+=3) { //For per iterar els triangles
 		Vector3 P0 = myVertices.at(i);
@@ -19,7 +19,9 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
 		P1 = camera->ProjectVector(P1, negZ);
 		P2 = camera->ProjectVector(P2, negZ);
 
-		
+		Vector2 uv0 = UVs.at(i);
+		Vector2 uv1 = UVs.at(i+1);
+		Vector2 uv2 = UVs.at(i+2);
 		//Clip to Framebuffer Space
 		
 		//Dins el cub 
@@ -38,9 +40,18 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
 			Vector3 P1_2D = { P1.x, P1.y, P1.z};
 			Vector3 P2_2D = { P2.x, P2.y, P2.z};
 			//Draw Triangle
-			
+
+			uv0.x = uv0.x * (framebuffer->width - 1);
+			uv1.x = uv1.x * (framebuffer->width - 1);
+			uv2.x = uv2.x * (framebuffer->width - 1);
+
+			uv0.y = uv0.y * (framebuffer->height - 1);
+			uv1.y = uv1.y * (framebuffer->height - 1);
+			uv2.y = uv2.y * (framebuffer->height - 1);
+
+
 			//framebuffer->DrawTriangle(P0_2D, P1_2D, P2_2D, Color::GREEN, false, Color::BLUE);
-			framebuffer->DrawTriangleInterpolated(P0_2D, P1_2D, P2_2D, Color::GREEN, Color::RED, Color::BLUE, zBuffer);
+			framebuffer->DrawTriangleInterpolated(P0_2D, P1_2D, P2_2D, Color::GREEN, Color::RED, Color::BLUE, zBuffer,texture, uv0, uv1, uv2);
 		}
 		
 	}

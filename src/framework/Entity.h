@@ -15,6 +15,7 @@ public:
 	int Scale = 0;
 	Mesh* mesh;
 	Matrix44 model;
+	Image* texture;
 
 	Entity() {};
 	Entity(Matrix44 _model, Mesh* _mymesh) { mesh = _mymesh;model = _model; };
