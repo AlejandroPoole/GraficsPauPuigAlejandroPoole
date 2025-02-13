@@ -102,7 +102,7 @@ void Camera::UpdateViewMatrix()
 
 	view_matrix.Set(Right.x, Right.y, Right.z, -Right.Dot(eye), UP.x, UP.y, UP.z, -UP.Dot(eye), Forward.x, Forward.y, Forward.z, -Forward.Dot(eye), 0, 0, 0, 1);
 
-
+	
 
 
 

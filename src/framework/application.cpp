@@ -55,16 +55,18 @@ void Application::Init(void)
 	entity2.model.Translate(-0.5,-0.3,0);
 	entity3.model.Translate(0.5, 0, 0);
 	//CREAR CAMARA
-	myCamera.eye = { 0,0,1.3};
+	myCamera.eye = { 0,0,1};
 	myCamera.center = { 0,0,0 };
 	myCamera.up = { 0,1,0 };
 	
 	myCamera.type = 0;
 	
-	myCamera.far_plane = 5;
+	myCamera.far_plane = 100;
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 4;
-	zBuffer.Fill(INT_MAX);
+
+
+	
 	//myCamera.SetOrthographic(3, 3, 3, 3, 3, 3);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 }
@@ -72,7 +74,10 @@ void Application::Init(void)
 // Render one frame
 void Application::Render(void) {
 
+
+	zBuffer.Fill(FLT_MAX);
 	framebuffer.Fill(Color::BLACK);
+
 	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 
@@ -160,15 +165,31 @@ void Application::OnMouseButtonUp(SDL_MouseButtonEvent event)
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
 	if (click) {
-		mouse_position.normalize();
-	
-		if (mouse_delta.x < 0) {
-			myCamera.eye.x += mouse_position.x/100;
-		}
-		else if (mouse_delta.x >0) {
+		
+		
+		//Horizontal
+		if (mouse_delta.x > 0) {
 			
-			myCamera.eye.x -= mouse_position.x/100;
+			myCamera.eye.x += mouse_delta.x / 2000;
+			myCamera.eye.z = 1;
 		}
+		else if (mouse_delta.x < 0) {
+			
+			myCamera.eye.x += mouse_delta.x / 2000;
+				myCamera.eye.z = 1;
+			
+		}
+		//Vertical
+		if (mouse_delta.y > 0 && myCamera.eye.y < 1) {
+			
+			myCamera.eye.y += mouse_delta.y / 2000;
+		}
+		else if (mouse_delta.y < 0 ) {
+			
+			myCamera.eye.y += mouse_delta.y/ 2000;
+		}
+
+
 		
 		
 		
