@@ -580,14 +580,13 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 			float gammaNorm = gamma / sum;
 			float sumNorm = alphaNorm + betaNorm + gammaNorm;
 
-			if (round(sumNorm) == 1 && alphaNorm >= 0 && alphaNorm <=1 && betaNorm >= 0 && betaNorm <= 1 && gammaNorm >= 0 && gammaNorm <= 1) {
+			if (round(sumNorm) == 1 && alphaNorm >= 0 && betaNorm >= 0 && gammaNorm >= 0) {
 				float zDepth = (p0.z * alphaNorm) + (p1.z * betaNorm) + (p2.z * gammaNorm);
-				Color finalColor = c0 * alphaNorm + c1 * betaNorm + c2 * gammaNorm;
-				SetPixel(j, i, finalColor);/*
-				if ((zbuffer->GetPixel(j,i) > zDepth)) {
+				if ((zbuffer->GetPixel(j, i) > zDepth)) {
 					zbuffer->SetPixel(j, i, zDepth);
-					
-				}*/
+					Color c = (c0 * alphaNorm) + (c1 * betaNorm) + (c2 * gammaNorm);
+					SetPixel(j, i, c);
+				}
 			}
 		}
 	}

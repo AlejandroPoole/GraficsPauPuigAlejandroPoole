@@ -74,7 +74,9 @@ void Application::Init(void)
 // Render one frame
 void Application::Render(void) {
 
-
+	zBuffer.width = framebuffer.width;
+	zBuffer.height = framebuffer.height;
+	zBuffer.pixels = new float[framebuffer.width * framebuffer.height];
 	zBuffer.Fill(FLT_MAX);
 	framebuffer.Fill(Color::BLACK);
 

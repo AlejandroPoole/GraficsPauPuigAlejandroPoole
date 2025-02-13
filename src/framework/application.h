@@ -69,7 +69,7 @@ public:
 	Entity entity4;
 	Camera myCamera;
 	bool click = false;
-	FloatImage zBuffer{ (unsigned int) window_width, (unsigned int) window_height };
+	FloatImage zBuffer;
 	
 	
 
