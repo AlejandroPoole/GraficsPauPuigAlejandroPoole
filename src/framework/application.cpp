@@ -213,19 +213,15 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 
 void Application::OnWheel(SDL_MouseWheelEvent event)
 {
+	Vector3 direction = (myCamera.center - myCamera.eye);
+	direction.Normalize();
 	float dy = event.preciseY;
-	if (dy > 0 ) {
-		myCamera.eye.z += dy/10;
-	}
-	else if(dy<0 && myCamera.eye.z >=0.1){
-		myCamera.eye.z += dy/10;
-
-	}
+	myCamera.eye.x -= direction.x * (dy / 10);
+	myCamera.eye.y -= direction.y * (dy / 10);
+	myCamera.eye.z -= direction.z * (dy / 10);
 		
+
 	
- 
-
-		
 	
 	// ...
 }
