@@ -170,17 +170,17 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 		//Horizontal
 		if (mouse_delta.x > 0) {
 			
-			myCamera.eye.x += mouse_delta.x / 2000;
-			myCamera.eye.z = 1;
+			myCamera.center.x += mouse_delta.x / 2000;
+			
 		}
 		else if (mouse_delta.x < 0) {
 			
-			myCamera.eye.x += mouse_delta.x / 2000;
-				myCamera.eye.z = 1;
+			myCamera.center.x += mouse_delta.x / 2000;
+
 			
 		}
 		//Vertical
-		if (mouse_delta.y > 0 && myCamera.eye.y < 1) {
+		if (mouse_delta.y > 0 ) {
 			
 			myCamera.eye.y += mouse_delta.y / 2000;
 		}
@@ -201,7 +201,19 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 void Application::OnWheel(SDL_MouseWheelEvent event)
 {
 	float dy = event.preciseY;
+	if (dy > 0 ) {
+		myCamera.eye.z += dy/10;
+	}
+	else if(dy<0 && myCamera.eye.z >=0.1){
+		myCamera.eye.z += dy/10;
 
+	}
+		
+	
+ 
+
+		
+	
 	// ...
 }
 
