@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 
-void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer,bool zbufferOn, bool InterpolatedUV) {
+void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer,bool zbufferOn, bool InterpolatedUV, const Color &c) {
 	const std::vector<Vector3> myVertices = mesh->GetVertices();
 	const std::vector<Vector2> UVs = mesh->GetUVs();
 	bool negZ = false;
@@ -62,10 +62,10 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer,bool
 
 			if (InterpolatedUV) {
 				framebuffer->DrawTriangleInterpolated(P0_2D, P1_2D, P2_2D, Color::GREEN, Color::RED, Color::BLUE, zBuffer, texture, uv0, uv1, uv2);
-
+				
 			}
 			else if (!InterpolatedUV) {
-				framebuffer->DrawTriangle({ P0_2D.x, P0_2D.y }, { P1_2D.x, P1_2D.y }, { P2_2D.x, P2_2D.y }, Color::GREEN, true, Color::BLUE); 
+				framebuffer->DrawTriangle({ P0_2D.x, P0_2D.y }, { P1_2D.x, P1_2D.y }, { P2_2D.x, P2_2D.y }, c, true, c); 
 
 			}
 			

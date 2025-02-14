@@ -148,9 +148,27 @@ void Camera::UpdateProjectionMatrix()
 	if (type == PERSPECTIVE) {
 		float f = 1 / std::tan(fov / 2);
 		
-		projection_matrix.Set(f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far_plane + near_plane) / (near_plane - far_plane), (2 * far_plane * near_plane) / (near_plane - far_plane), 0, 0, -1, 0);
 		
 		
+		projection_matrix.m[0] = f/aspect;
+		projection_matrix.m[1] = 0;
+		projection_matrix.m[2] = 0;
+		projection_matrix.m[3] = 0;
+
+		projection_matrix.m[4] = 0;
+		projection_matrix.m[5] = f;
+		projection_matrix.m[6] = 0;
+		projection_matrix.m[7] = 0;
+
+		projection_matrix.m[8] = 0;
+		projection_matrix.m[9] = 0;
+		projection_matrix.m[10] = (far_plane + near_plane) / (near_plane - far_plane);
+		projection_matrix.m[11] = -1;
+
+		projection_matrix.m[12] = 0;
+		projection_matrix.m[13] = 0;
+		projection_matrix.m[14] = (2 * far_plane * near_plane) / (near_plane - far_plane);
+		projection_matrix.m[15] = 0;
 		
 	}
 	else if (type == ORTHOGRAPHIC) {

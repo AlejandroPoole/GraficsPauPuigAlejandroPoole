@@ -64,16 +64,10 @@ void Application::Init(void)
 	myCamera.eye = { 0,0,1};
 	myCamera.center = { 0,0,0 };
 	myCamera.up = { 0,1,0 };
-	
 	myCamera.type = 0;
-	
 	myCamera.far_plane = 100;
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 4;
-
-
-	
-	//myCamera.SetOrthographic(3, 3, 3, 3, 3, 3);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 }
 
@@ -90,12 +84,12 @@ void Application::Render(void) {
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 
 	
-	if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV); }
+	if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV,Color::WHITE); }
 	
 	else if (mode == 2) {
-		entity.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn, InterpolatedUV);
-		entity2.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn,InterpolatedUV);
-		entity3.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn, InterpolatedUV);
+		entity.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn, InterpolatedUV, Color::WHITE);
+		entity2.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn,InterpolatedUV,Color::GREEN);
+		entity3.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn, InterpolatedUV,Color::BLUE);
 	}
 
 	framebuffer.Render();
@@ -124,25 +118,12 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	// KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
 	switch (event.keysym.sym) {
 	case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
-	case SDLK_PLUS: if (property == 1) {
-		myCamera.near_plane += 0.01;
-	}
-				  else if (property == 2) {
-		myCamera.far_plane += 1;
-	}
-				  else if (property == 3 && myCamera.fov<(PI+PI/18)) {
-		myCamera.fov += PI/18;
-	}break;
-	case SDLK_MINUS:
-		if (property == 1 ) {
-			myCamera.near_plane -= 0.01;
-		}
-		else if (property == 2 && myCamera.far_plane>0) {
-			myCamera.far_plane -= 1;
-		} 
-		else if (property == 3 && myCamera.fov>PI/18) {
-			myCamera.fov -= PI/18;
-		}break;
+	case SDLK_PLUS: if (property == 1) {myCamera.near_plane += 0.01;}
+					else if (property == 2) {myCamera.far_plane += 1;}
+					else if (property == 3 && myCamera.fov<(PI+PI/18)) {myCamera.fov += PI/18;}break;
+	case SDLK_MINUS: if (property == 1 ) {myCamera.near_plane -= 0.01;}
+					else if (property == 2 && myCamera.far_plane>0) {myCamera.far_plane -= 1;} 
+					else if (property == 3 && myCamera.fov>PI/18) {myCamera.fov -= PI/18;}break;
 	case SDLK_1: mode = 1; break;
 	case SDLK_2: mode = 2; break;
 	case SDLK_n: property = 1; break;
