@@ -72,6 +72,9 @@ void Application::Init(void)
 
 	//LAB4
 	meshShader = Shader::Get("./res/shaders/simple.vs", "./res/shaders/simple.fs");
+	quadShader = Shader::Get("./res/shaders/quad.vs", "./res/shaders/quad.fs");
+
+	quad.CreateQuad();
 }
 
 // Render one frame
@@ -98,7 +101,7 @@ void Application::Render(void) {
 	//framebuffer.Render();
 
 	//LAB4
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	/*glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	Matrix44 model_test;
@@ -112,7 +115,11 @@ void Application::Render(void) {
 		meshShader->SetFloat("u_time", time);
 		entity4.mesh->Render();
 		meshShader->Disable();
-	}
+	}*/
+
+	quadShader->Enable();
+	quad.Render();
+	quadShader->Disable();
 	
 }
 

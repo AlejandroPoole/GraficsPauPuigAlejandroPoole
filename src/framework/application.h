@@ -78,7 +78,9 @@ public:
 
 	//LAB4
 	Shader* meshShader;
-	
+	Shader* quadShader;
+
+	Mesh quad;
 
 
 	SDL_Window* window = nullptr;
