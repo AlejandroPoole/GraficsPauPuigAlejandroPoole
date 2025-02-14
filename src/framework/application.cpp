@@ -69,32 +69,40 @@ void Application::Init(void)
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 4;
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
+
+	//LAB4
+	meshShader = Shader::Get("./res/shaders/simple.vs", "./res/shaders/simple.fs");
 }
 
 // Render one frame
 void Application::Render(void) {
 
-	zBuffer.width = framebuffer.width;
-	zBuffer.height = framebuffer.height;
-	zBuffer.pixels = new float[framebuffer.width * framebuffer.height];
-	zBuffer.Fill(FLT_MAX);
-	framebuffer.Fill(Color::BLACK);
+	//zBuffer.width = framebuffer.width;
+	//zBuffer.height = framebuffer.height;
+	//zBuffer.pixels = new float[framebuffer.width * framebuffer.height];
+	//zBuffer.Fill(FLT_MAX);
+	//framebuffer.Fill(Color::BLACK);
 
-	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
-	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
+	//myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
+	//myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 
-	
-	if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV,Color::WHITE); }
-	
-	else if (mode == 2) {
-		entity.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn, InterpolatedUV, Color::WHITE);
-		entity2.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn,InterpolatedUV,Color::GREEN);
-		entity3.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn, InterpolatedUV,Color::BLUE);
-	}
+	//
+	//if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV,Color::WHITE); }
+	//
+	//else if (mode == 2) {
+	//	entity.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn, InterpolatedUV, Color::WHITE);
+	//	entity2.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn,InterpolatedUV,Color::GREEN);
+	//	entity3.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn, InterpolatedUV,Color::BLUE);
+	//}
 
-	framebuffer.Render();
+	//framebuffer.Render();
 
-	
+	//LAB4
+	meshShader->Enable();
+	meshShader->SetMatrix44("u_model", entity4.model);
+	meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
+	entity4.mesh->Render();
+	meshShader->Disable();
 
 }
 

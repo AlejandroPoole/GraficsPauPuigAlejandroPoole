@@ -74,6 +74,9 @@ public:
 	bool InterpolatedUV = false;
 	bool zBufferOn = false;
 	bool click2 = false;
+
+	//LAB4
+	Shader* meshShader;
 	
 
 
