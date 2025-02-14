@@ -71,8 +71,8 @@ void Application::Init(void)
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 
 	//LAB4
-	meshShader = Shader::Get("./res/shaders/simple.vs", "./res/shaders/simple.fs");
-	quadShader = Shader::Get("./res/shaders/quad.vs", "./res/shaders/quad.fs");
+	meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
+	quadShader = Shader::Get("../res/shaders/quad.vs", "../res/shaders/quad.fs");
 
 	quad.CreateQuad();
 }
