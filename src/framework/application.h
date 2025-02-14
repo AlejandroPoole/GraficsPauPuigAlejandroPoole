@@ -8,6 +8,7 @@
 #include "framework.h"
 #include "image.h"
 #include "Entity.h"
+#include "shader.h"
 
 
 

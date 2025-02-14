@@ -98,12 +98,22 @@ void Application::Render(void) {
 	//framebuffer.Render();
 
 	//LAB4
-	meshShader->Enable();
-	meshShader->SetMatrix44("u_model", entity4.model);
-	meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
-	entity4.mesh->Render();
-	meshShader->Disable();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	Matrix44 model_test;
 
+	for (int i = 0; i < 10; i++) {
+		model_test.Translate(0.5 + i, 0, 0);
+		
+		meshShader->Enable();
+		meshShader->SetMatrix44("u_model", model_test);
+		meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
+		meshShader->SetFloat("u_time", time);
+		entity4.mesh->Render();
+		meshShader->Disable();
+	}
+	
 }
 
 // Called after render
