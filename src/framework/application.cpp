@@ -80,8 +80,8 @@ void Application::Init(void)
 	
 
 	//LAB4
-	meshShader = Shader::Get("./res/shaders/simple.vs", "./res/shaders/simple.fs");
-	quadShader = Shader::Get("./res/shaders/quad.vs", "./res/shaders/quad.fs");
+	meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
+	quadShader = Shader::Get("../res/shaders/quad.vs", "../res/shaders/quad.fs");
 	quad.CreateQuad();
 	entity4.mesh = &quad;
 }
@@ -126,10 +126,10 @@ void Application::Render(void) {
 		meshShader->Disable();
 	}*/
 
-	meshShader->Enable();
+	quadShader->Enable();
 	entity4.mesh->Render();
 	
-	meshShader->Disable();
+	quadShader->Disable();
 	
 }
 
