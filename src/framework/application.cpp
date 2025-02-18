@@ -120,6 +120,7 @@ void Application::Render(void) {
 	quadShader->Enable();
 	quad.Render();
 	quadShader->Disable();
+	//XD
 	
 }
 
