@@ -23,5 +23,20 @@ void main()
 	// vec3 blue_color = vec3(0, 0, step(sin(25*v_uv.y), 0.003));
 	// vec3 finalColor = red_color + blue_color;
 	
+	// gl_FragColor = vec4(finalColor,1.0);	
+
+	//d)
+	// vec3 red_color = vec3(step(sin(25*v_uv.x), 0.003), 0, 0);
+	// vec3 green_color = vec3(0, step(sin(25*v_uv.y), 0.003), 0);
+	// vec3 finalColor = red_color + green_color;
+	
 	// gl_FragColor = vec4(finalColor,1.0);
+
+	//e)
+	vec3 horizontal = vec3(step(sin(50*v_uv.y), 0), step(sin(50*v_uv.y), 0), step(sin(50*v_uv.y), 0));
+	vec3 vertical = vec3(step(sin(50*v_uv.x), 0), step(sin(50*v_uv.x), 0), step(sin(50*v_uv.x), 0));
+
+	vec3 finalColor = abs(horizontal - vertical);
+	
+	gl_FragColor = vec4(finalColor,1.0);
 }
