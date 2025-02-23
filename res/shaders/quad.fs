@@ -26,17 +26,18 @@ void main()
 	// gl_FragColor = vec4(finalColor,1.0);	
 
 	//d)
-	// vec3 red_color = vec3(step(sin(25*v_uv.x), 0.003), 0, 0);
-	// vec3 green_color = vec3(0, step(sin(25*v_uv.y), 0.003), 0);
-	// vec3 finalColor = red_color + green_color;
+	// vec3 red_color = vec3(v_uv.x - mod(v_uv.x, 0.05), 0, 0);
+	// vec3 green_color = vec3(0, v_uv.y - mod(v_uv.y, 0.05), 0);
 	
+	// vec3 finalColor = red_color + green_color;
+
 	// gl_FragColor = vec4(finalColor,1.0);
 
 	//e)
-	vec3 horizontal = vec3(step(sin(50*v_uv.y), 0), step(sin(50*v_uv.y), 0), step(sin(50*v_uv.y), 0));
-	vec3 vertical = vec3(step(sin(50*v_uv.x), 0), step(sin(50*v_uv.x), 0), step(sin(50*v_uv.x), 0));
+	// vec3 horizontal = vec3(step(sin(50*v_uv.y), 0), step(sin(50*v_uv.y), 0), step(sin(50*v_uv.y), 0));
+	// vec3 vertical = vec3(step(sin(50*v_uv.x), 0), step(sin(50*v_uv.x), 0), step(sin(50*v_uv.x), 0));
 
-	vec3 finalColor = abs(horizontal - vertical);
+	// vec3 finalColor = abs(horizontal - vertical);
 	
-	gl_FragColor = vec4(finalColor,1.0);
+	// gl_FragColor = vec4(finalColor,1.0);
 }
