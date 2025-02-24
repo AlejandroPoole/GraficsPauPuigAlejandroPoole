@@ -1,5 +1,4 @@
 varying vec2 v_uv;
-
 void main()
 {
 	//b)
@@ -39,5 +38,12 @@ void main()
 
 	// vec3 finalColor = abs(horizontal - vertical);
 	
+	// gl_FragColor = vec4(finalColor,1.0);
+
+	//f)
+	// vec3 green_color = vec3(0, abs(v_uv.y - step(0.5 + 0.25*sin(v_uv.x*2*3.14), v_uv.y)), 0);
+	
+	// vec3 finalColor = green_color;
+
 	// gl_FragColor = vec4(finalColor,1.0);
 }
