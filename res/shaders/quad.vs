@@ -1,5 +1,5 @@
 varying vec2 v_uv;
-
+uniform float u_mode;
 void main()
 {	
 

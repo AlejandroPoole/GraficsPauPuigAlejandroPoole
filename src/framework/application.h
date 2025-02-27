@@ -79,9 +79,11 @@ public:
 	//LAB4
 	Shader* meshShader;
 	Shader* quadShader;
-
+	Texture* texture;
 	Mesh quad;
-
+	float u_mode = 0.0;
+	float u_task = 0.0;
+	float u_lab = 0.0;
 
 	SDL_Window* window = nullptr;
 	int window_width;

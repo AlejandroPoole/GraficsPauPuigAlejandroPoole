@@ -65,8 +65,6 @@ void Application::Init(void)
 
 	entity4.n = entity4.texture;
 	entity4.zbufferTemp = &zBuffer;
-	entity2.model.Translate(-0.5,-0.3,0);
-	entity3.model.Translate(0.5, 0, 0);
 	//CREAR CAMARA
 	
 	myCamera.eye = { 0,0,1};
@@ -82,8 +80,10 @@ void Application::Init(void)
 	//LAB4
 	meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
 	quadShader = Shader::Get("../res/shaders/quad.vs", "../res/shaders/quad.fs");
+	texture = Texture::Get("../res/images/fruits.png");
 	quad.CreateQuad();
 	entity4.mesh = &quad;
+
 }
 
 // Render one frame
@@ -127,10 +127,12 @@ void Application::Render(void) {
 	}*/
 
 	quadShader->Enable();
+	quadShader->SetFloat("u_mode",u_mode);
+	quadShader->SetFloat("u_task", u_task);
+	quadShader->SetTexture("u_texture", texture);
 	entity4.mesh->Render();
 	
 	quadShader->Disable();
-	//XD
 	
 }
 
@@ -138,12 +140,6 @@ void Application::Render(void) {
 void Application::Update(float seconds_elapsed)
 {
 
-	//LAB2
-	if (mode == 2) {
-		entity.Update(seconds_elapsed);
-		entity2.Update2(seconds_elapsed);
-		entity3.Update3(seconds_elapsed);
-	}
 
 	
 }
@@ -160,15 +156,23 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	case SDLK_MINUS: if (property == 1 ) {myCamera.near_plane -= 0.01;}
 					else if (property == 2 && myCamera.far_plane>0) {myCamera.far_plane -= 1;} 
 					else if (property == 3 && myCamera.fov>PI/18) {myCamera.fov -= PI/18;}break;
-	case SDLK_1: mode = 1; break;
-	case SDLK_2: mode = 2; break;
-	case SDLK_n: property = 1; break;
-	case SDLK_f: property = 2;break;
-	case SDLK_v: property= 3;break;
-	case SDLK_t: entity4.textureOn = !entity4.textureOn;break;
-	case SDLK_z: zBufferOn =!zBufferOn;break;
-	case SDLK_c: InterpolatedUV = !InterpolatedUV;break;
+	case SDLK_a: u_mode = 1.00; break;
+	case SDLK_b: u_mode = 2.00; break;
+	case SDLK_c: u_mode = 3.00; break;
+	case SDLK_d: u_mode = 4.00; break;
+	case SDLK_e: u_mode = 5.00; break;
+	case SDLK_f: u_mode = 6.00; break;
+	
+	case SDLK_1: u_task = 1.00; break;
+	case SDLK_2: u_task = 2.00; break;
+	case SDLK_3: u_task = 3.00; break;
+	case SDLK_4: u_task = 4.00; break;
+	
+	case SDLK_l: if (u_lab == 4.00) { u_lab = 5.00; }
+			   else { u_lab = 4.00; }; break;
 	}
+
+
 }
 
 void Application::OnMouseButtonDown(SDL_MouseButtonEvent event) {
