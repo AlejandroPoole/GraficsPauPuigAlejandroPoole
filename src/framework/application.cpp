@@ -129,6 +129,7 @@ void Application::Render(void) {
 	quadShader->Enable();
 	quadShader->SetFloat("u_mode",u_mode);
 	quadShader->SetFloat("u_task", u_task);
+	quadShader->SetFloat("u_time", time);
 	quadShader->SetTexture("u_texture", texture);
 	entity4.mesh->Render();
 	

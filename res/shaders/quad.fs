@@ -1,6 +1,7 @@
 varying vec2 v_uv;
 uniform float u_mode;
 uniform float u_task;
+uniform float u_time;
 uniform sampler2D u_texture;
 
 void main()
@@ -114,6 +115,18 @@ void main()
 			texture_color.x = step(sin(0.5*texture_color.x), 0.2);
 			texture_color.y = step(sin(0.5*texture_color.y), 0.2);
 			texture_color.z = step(sin(0.5*texture_color.z), 0.2);
+			gl_FragColor = texture_color;
+		}
+	}
+	else if (u_task == 3){
+		if(u_mode == 1.0){
+			vec2 new_uv = vec2(v_uv.y, v_uv.x);
+			vec4 texture_color = texture2D(u_texture, new_uv);
+			gl_FragColor = texture_color;
+		}
+		else if(u_mode == 2.0){
+			vec2 new_uv = vec2(sin(3.0*v_uv.x), v_uv.y);
+			vec4 texture_color = texture2D(u_texture, new_uv);
 			gl_FragColor = texture_color;
 		}
 	}
