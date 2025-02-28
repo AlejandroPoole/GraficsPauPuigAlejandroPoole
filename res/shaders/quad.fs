@@ -73,7 +73,6 @@ void main()
 		else if (u_mode == 2.0){
 			//b)
 			vec4 texture_color = texture2D(u_texture, v_uv);
-			float average = sin(texture_color.x + texture_color.y + texture_color.z)/3;
 			texture_color.x = 1-texture_color.x;
 			texture_color.y = 1-texture_color.y;
 			texture_color.z = 1-texture_color.z;
@@ -88,6 +87,15 @@ void main()
 			texture_color.z = 0;
 			gl_FragColor = texture_color;
 		}
+		else if (u_mode == 4.0){
+			//d)
+			vec4 texture_color = texture2D(u_texture, v_uv);
+			float average = (texture_color.x + texture_color.y + texture_color.z)/3;
+			texture_color.x = step(0.5, sin(average));
+			texture_color.y = step(0.5, sin(average));
+			texture_color.z = step(0.5, sin(average));
+			gl_FragColor = texture_color;
+		}
 		else if (u_mode == 5.0){
 			//e)
 			vec4 texture_color = texture2D(u_texture, v_uv);
@@ -98,6 +106,14 @@ void main()
 			texture_color.y *= 0.8 - length(v);
 			texture_color.z *= 0.8 - length(v);
 
+			gl_FragColor = texture_color;
+		}
+		else if (u_mode == 6.0){
+			//f)
+			vec4 texture_color = texture2D(u_texture, v_uv);
+			texture_color.x = step(sin(0.5*texture_color.x), 0.2);
+			texture_color.y = step(sin(0.5*texture_color.y), 0.2);
+			texture_color.z = step(sin(0.5*texture_color.z), 0.2);
 			gl_FragColor = texture_color;
 		}
 	}
