@@ -1,5 +1,12 @@
 #include "Entity.h"
+#include "shader.h"
 
+void Entity::Render(Camera* camera) {
+	meshShader->Enable();
+	meshShader->SetMatrix44("u_model", model);
+	meshShader->SetMatrix44("u_viewprojection", camera->viewprojection_matrix);
+
+}
 
 void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer,bool zbufferOn, bool InterpolatedUV, const Color &c) {
 	const std::vector<Vector3> myVertices = mesh->GetVertices();

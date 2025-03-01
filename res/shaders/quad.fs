@@ -27,8 +27,8 @@ void main()
 		}
 		else if(u_mode == 3.0){
 			//c)
-			vec3 red_color = vec3(step(sin(25*v_uv.x), 0.003), 0, 0);
-			vec3 blue_color = vec3(0, 0, step(sin(25*v_uv.y), 0.003));
+			vec3 red_color = vec3(sin(50*v_uv.x), 0.0, 0.0);
+			vec3 blue_color = vec3(0.0, 0.0, sin(50*v_uv.y));
 			vec3 finalColor = red_color + blue_color;
 			
 			gl_FragColor = vec4(finalColor,1.0);
@@ -125,7 +125,7 @@ void main()
 			gl_FragColor = texture_color;
 		}
 		else if(u_mode == 2.0){
-			vec2 new_uv = vec2(sin(3.0*v_uv.x), v_uv.y);
+			vec2 new_uv = vec2(sin(v_uv.x + u_time/2), v_uv.y);
 			vec4 texture_color = texture2D(u_texture, new_uv);
 			gl_FragColor = texture_color;
 		}

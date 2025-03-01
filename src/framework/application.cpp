@@ -65,9 +65,15 @@ void Application::Init(void)
 
 	entity4.n = entity4.texture;
 	entity4.zbufferTemp = &zBuffer;
+
+	//LAB4
+	entity4.meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
+	quadShader = Shader::Get("../res/shaders/quad.vs", "../res/shaders/quad.fs");
+	texture = Texture::Get("../res/images/fruits.png");
+	quad.CreateQuad();
+
 	//CREAR CAMARA
-	
-	myCamera.eye = { 0,0,1};
+	myCamera.eye = { 0,0,1 };
 	myCamera.center = { 0,0,0 };
 	myCamera.up = { 0,1,0 };
 	myCamera.type = 0;
@@ -75,15 +81,6 @@ void Application::Init(void)
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 4;
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
-	
-
-	//LAB4
-	meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
-	quadShader = Shader::Get("../res/shaders/quad.vs", "../res/shaders/quad.fs");
-	texture = Texture::Get("../res/images/fruits.png");
-	quad.CreateQuad();
-	entity4.mesh = &quad;
-
 }
 
 // Render one frame
@@ -110,30 +107,31 @@ void Application::Render(void) {
 	//framebuffer.Render();
 
 	//LAB4
-	/*glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
-	Matrix44 model_test;
+	if (u_task == 4.0) {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
 
-	for (int i = 0; i < 10; i++) {
-		model_test.Translate(0.5 + i, 0, 0);
-		
-		meshShader->Enable();
-		meshShader->SetMatrix44("u_model", model_test);
-		meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
-		meshShader->SetFloat("u_time", time);
-		entity4.mesh->Render();
-		meshShader->Disable();
-	}*/
+			//entity4.meshShader->Enable();
+			//entity4.meshShader->SetMatrix44("u_model", entity4.model);
+			//entity4.meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
+			//entity4.meshShader->SetFloat("u_time", time);
+			entity4.Render(&myCamera);
+			entity4.meshShader->Disable();
+	}
+	else {
 
-	quadShader->Enable();
-	quadShader->SetFloat("u_mode",u_mode);
-	quadShader->SetFloat("u_task", u_task);
-	quadShader->SetFloat("u_time", time);
-	quadShader->SetTexture("u_texture", texture);
-	entity4.mesh->Render();
-	
-	quadShader->Disable();
+		quadShader->Enable();
+
+		quadShader->SetFloat("u_mode", u_mode);
+		quadShader->SetFloat("u_task", u_task);
+		quadShader->SetFloat("u_time", time);
+		quadShader->SetTexture("u_texture", texture);
+
+		quad.Render();
+
+		quadShader->Disable();
+	}
 	
 }
 
