@@ -69,7 +69,7 @@ void main()
 			texture_color.x = average;
 			texture_color.y = average;
 			texture_color.z = average;
-			gl_FragColor = texture_color;	
+			gl_FragColor = texture_color;
 		}
 		else if (u_mode == 2.0){
 			//b)
@@ -92,9 +92,9 @@ void main()
 			//d)
 			vec4 texture_color = texture2D(u_texture, v_uv);
 			float average = (texture_color.x + texture_color.y + texture_color.z)/3;
-			texture_color.x = step(0.5, sin(average));
-			texture_color.y = step(0.5, sin(average));
-			texture_color.z = step(0.5, sin(average));
+			texture_color.x = step(0.5, average);
+			texture_color.y = step(0.5, average);
+			texture_color.z = step(0.5, average);
 			gl_FragColor = texture_color;
 		}
 		else if (u_mode == 5.0){

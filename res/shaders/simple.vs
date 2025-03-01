@@ -18,8 +18,6 @@ void main()
 	// Convert local normal to world space
 	vec3 world_normal = (u_model * vec4( gl_Normal.xyz, 0.0)).xyz;
 
-	//world_position.x = world_position.x + 0.2*sin(5*u_time+ 10*world_position.y);
-
 	// Pass them to the fragment shader interpolated
 	v_world_position = world_position;
 	v_world_normal = world_normal;
