@@ -62,7 +62,7 @@ void Application::Init(void)
 	mymesh4->LoadOBJ("..//res/meshes/lee.obj");
 	entity4.model = mymodel4;
 	entity4.mesh = mymesh4;
-
+	entity4.texture2 = Texture::Get("../res/textures/lee_color_specular.tga");
 	entity4.n = entity4.texture;
 	entity4.zbufferTemp = &zBuffer;
 
@@ -92,8 +92,8 @@ void Application::Render(void) {
 	//zBuffer.Fill(FLT_MAX);
 	//framebuffer.Fill(Color::BLACK);
 
-	//myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
-	//myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
+	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
+	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 
 	//
 	//if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV,Color::WHITE); }
@@ -108,16 +108,17 @@ void Application::Render(void) {
 
 	//LAB4
 	if (u_task == 4.0) {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			//entity4.meshShader->Enable();
-			//entity4.meshShader->SetMatrix44("u_model", entity4.model);
-			//entity4.meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
-			//entity4.meshShader->SetFloat("u_time", time);
-			entity4.Render(&myCamera);
-			entity4.meshShader->Disable();
+		entity4.meshShader->Enable();
+		//entity4.meshShader->SetMatrix44("u_model", entity4.model);
+		//entity4.meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
+		//entity4.meshShader->SetFloat("u_time", time);
+		entity4.Render(&myCamera);
+		entity4.meshShader->Disable();
 	}
 	else {
 
@@ -149,12 +150,12 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	// KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
 	switch (event.keysym.sym) {
 	case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
-	case SDLK_PLUS: if (property == 1) {myCamera.near_plane += 0.01;}
-					else if (property == 2) {myCamera.far_plane += 1;}
-					else if (property == 3 && myCamera.fov<(PI+PI/18)) {myCamera.fov += PI/18;}break;
-	case SDLK_MINUS: if (property == 1 ) {myCamera.near_plane -= 0.01;}
-					else if (property == 2 && myCamera.far_plane>0) {myCamera.far_plane -= 1;} 
-					else if (property == 3 && myCamera.fov>PI/18) {myCamera.fov -= PI/18;}break;
+	//case SDLK_PLUS: if (property == 1) {myCamera.near_plane += 0.01;}
+	//				else if (property == 2) {myCamera.far_plane += 1;}
+	//				else if (property == 3 && myCamera.fov<(PI+PI/18)) {myCamera.fov += PI/18;}break;
+	//case SDLK_MINUS: if (property == 1 ) {myCamera.near_plane -= 0.01;}
+	//				else if (property == 2 && myCamera.far_plane>0) {myCamera.far_plane -= 1;} 
+	//				else if (property == 3 && myCamera.fov>PI/18) {myCamera.fov -= PI/18;}break;
 	case SDLK_a: u_mode = 1.00; break;
 	case SDLK_b: u_mode = 2.00; break;
 	case SDLK_c: u_mode = 3.00; break;

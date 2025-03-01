@@ -7,10 +7,6 @@
 #include "image.h"
 #include "shader.h"
 
-
-
-
-
 class Entity {
 
 
@@ -24,6 +20,7 @@ public:
 	bool textureOn = false;
 	FloatImage* zbufferTemp;
 	Shader* meshShader;
+	Texture* texture2;
 
 	Entity() {};
 	Entity(Matrix44 _model, Mesh* _mymesh) { mesh = _mymesh;model = _model; };
