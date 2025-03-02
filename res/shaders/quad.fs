@@ -111,10 +111,13 @@ void main()
 		}
 		else if (u_mode == 6.0){
 			//f)
-			vec4 texture_color = texture2D(u_texture, v_uv);
-			texture_color.x = step(sin(0.5*texture_color.x), 0.2);
-			texture_color.y = step(sin(0.5*texture_color.y), 0.2);
-			texture_color.z = step(sin(0.5*texture_color.z), 0.2);
+			vec4 texture_color = vec4(0.0);
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					texture_color += texture2D(u_texture, v_uv + vec2(i * 0.005, j * 0.005));
+				}
+			}
+			texture_color = texture_color/16.0;
 			gl_FragColor = texture_color;
 		}
 	}
