@@ -20,6 +20,7 @@ void Material::Enable(const sUniformData& uniformData) {
 	shader->SetMatrix44("u_viewprojection", uniformData.viewProjection);
 	shader->SetTexture("u_texture", uniformData.texture);
 	shader->SetVector3("u_Ia", uniformData.Ia);
+	shader->SetVector3("u_intensity", uniformData.Intensity);
 	
 }
 
