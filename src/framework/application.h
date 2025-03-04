@@ -9,6 +9,7 @@
 #include "image.h"
 #include "Entity.h"
 #include "shader.h"
+#include "material.h"
 
 
 
@@ -90,6 +91,10 @@ public:
 	int window_height;
 
 	float time;
+
+	//LAB 5
+	Vector3 Ia;
+	sLight lights[100];
 
 	// Input
 	const Uint8* keystate;

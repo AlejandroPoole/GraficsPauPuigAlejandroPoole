@@ -128,9 +128,10 @@ void main()
 			gl_FragColor = texture_color;
 		}
 		else if(u_mode == 2.0){
-			vec2 new_uv = vec2(sin(20*v_uv.x + u_time/0.5 ), cos(20*v_uv.y -u_time/0.5));
+			vec2 new_uv = vec2(sin(3*v_uv.x)*u_time/45, v_uv.y);
 			vec4 texture_color = texture2D(u_texture, new_uv);
 			gl_FragColor = texture_color;
+			
 		}
 	}
 }

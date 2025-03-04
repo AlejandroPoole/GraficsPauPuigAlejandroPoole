@@ -6,6 +6,8 @@
 #include "mesh.h"
 #include "image.h"
 #include "shader.h"
+#include "material.h"
+
 
 class Entity {
 
@@ -21,11 +23,13 @@ public:
 	FloatImage* zbufferTemp;
 	Shader* meshShader;
 	Texture* texture2;
+	Material entityMaterial;
 
 	Entity() {};
 	Entity(Matrix44 _model, Mesh* _mymesh) { mesh = _mymesh;model = _model; };
 
 	void Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer, bool zbufferOn, bool InterpolatedUV, const Color& c);
+	void Render(sUniformData uniformData);
 	void Render(Camera* camera);
 	void Update(float seconds_elapsed);
 	void Update2(float seconds_elapsed);

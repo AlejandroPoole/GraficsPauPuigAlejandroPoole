@@ -12,17 +12,31 @@
 #include "texture.h"
 #include "Entity.h"
 
-class Material: public Entity
+class Material
 {
-	Vector3 diffuse;
-	Vector3 specular;
-	Vector3 ambient;
-	int shininess;
+	Vector3 Kd;
+	Vector3 Ks;
+	Vector3 Ka;
+	float shininess;
+	Vector3 materialColor;
+	Texture materialTexture;
 
 public:
 	Material() {};
 
 
-	void Enable();
+	void Enable(const sUniformData& uniformData);
+	void Disable();
+};
 
+struct sLight {
+	Vector2 Position;
+	Vector3 intensity;
+};
+
+struct sUniformData {
+	Matrix44 viewProjection;
+	Matrix44 modelMatrix;
+	Material material;
+	Vector3 Ia;
 };

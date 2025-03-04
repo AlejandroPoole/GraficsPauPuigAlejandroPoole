@@ -66,6 +66,13 @@ void Application::Init(void)
 	entity4.n = entity4.texture;
 	entity4.zbufferTemp = &zBuffer;
 
+	Matrix44 mymodel2;
+	Mesh* mymesh2 = new Mesh();
+	mymesh4->LoadOBJ("..//res/meshes/lee.obj");
+	entity2.model = mymodel2;
+	entity2.mesh = mymesh2;
+	entity2.texture2 = Texture::Get("../res/textures/lee_color_specular.tga");
+
 	//LAB4
 	entity4.meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
 	quadShader = Shader::Get("../res/shaders/quad.vs", "../res/shaders/quad.fs");
@@ -81,6 +88,8 @@ void Application::Init(void)
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 4;
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
+
+	sUniformData uniformData = {myCamera.viewprojection_matrix, entity2.model, entity2.entityMaterial ,Ia};
 }
 
 // Render one frame
