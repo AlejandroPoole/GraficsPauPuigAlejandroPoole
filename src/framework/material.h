@@ -10,11 +10,19 @@
 #include "main/includes.h"
 #include "shader.h"
 #include "texture.h"
+#include "Entity.h"
 
-class Material
+class Material: public Entity
 {
-
+	Vector3 diffuse;
+	Vector3 specular;
+	Vector3 ambient;
+	int shininess;
 
 public:
+	Material() {};
+
+
+	void Enable();
 
 };
