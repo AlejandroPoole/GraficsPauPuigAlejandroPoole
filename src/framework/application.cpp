@@ -3,6 +3,7 @@
 #include "shader.h"
 #include "utils.h" 
 #include "Entity.h"
+#include "material.h"
 
 Application::Application(const char* caption, int width, int height)
 {
@@ -68,16 +69,20 @@ void Application::Init(void)
 
 	Matrix44 mymodel2;
 	Mesh* mymesh2 = new Mesh();
-	mymesh4->LoadOBJ("..//res/meshes/lee.obj");
+	mymesh2->LoadOBJ("..//res/meshes/lee.obj");
 	entity2.model = mymodel2;
 	entity2.mesh = mymesh2;
-	entity2.texture2 = Texture::Get("../res/textures/lee_color_specular.tga");
+	entity2.entityMaterial.materialTexture = Texture::Get("../res/textures/lee_color_specular.tga");
+	entity2.entityMaterial.shader = Shader::Get("../res/shaders/gouraud.vs", "../res/shaders/gouraud.fs");
+
 
 	//LAB4
 	entity4.meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
 	quadShader = Shader::Get("../res/shaders/quad.vs", "../res/shaders/quad.fs");
 	texture = Texture::Get("../res/images/fruits.png");
 	quad.CreateQuad();
+
+	
 
 	//CREAR CAMARA
 	myCamera.eye = { 0,0,1 };
@@ -88,8 +93,9 @@ void Application::Init(void)
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 4;
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
-
-	sUniformData uniformData = {myCamera.viewprojection_matrix, entity2.model, entity2.entityMaterial ,Ia};
+	lights[0] = {(0.8,0.5, 0.5), (0,1,0)};
+	Ia = { 0.2,0.2,0.2 };
+	
 }
 
 // Render one frame
@@ -103,7 +109,7 @@ void Application::Render(void) {
 
 	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
-
+	uniformData = {myCamera.viewprojection_matrix, entity2.model,Ia, entity2.entityMaterial.materialTexture, lights[0].intensity};
 	//
 	//if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV,Color::WHITE); }
 	//
@@ -116,31 +122,40 @@ void Application::Render(void) {
 	//framebuffer.Render();
 
 	//LAB4
-	if (u_task == 4.0) {
-		
+	if (u_lab == 4.0) {
+		if (u_task == 4.0) {
+
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LEQUAL);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			entity4.meshShader->Enable();
+			//entity4.meshShader->SetMatrix44("u_model", entity4.model);
+			//entity4.meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
+			//entity4.meshShader->SetFloat("u_time", time);
+			entity4.Render(&myCamera);
+			entity4.meshShader->Disable();
+		}
+		else {
+
+			quadShader->Enable();
+
+			quadShader->SetFloat("u_mode", u_mode);
+			quadShader->SetFloat("u_task", u_task);
+			quadShader->SetFloat("u_time", time);
+			quadShader->SetTexture("u_texture", texture);
+
+			quad.Render();
+
+			quadShader->Disable();
+		}
+	}
+	else {
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		entity4.meshShader->Enable();
-		//entity4.meshShader->SetMatrix44("u_model", entity4.model);
-		//entity4.meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
-		//entity4.meshShader->SetFloat("u_time", time);
-		entity4.Render(&myCamera);
-		entity4.meshShader->Disable();
-	}
-	else {
-
-		quadShader->Enable();
-
-		quadShader->SetFloat("u_mode", u_mode);
-		quadShader->SetFloat("u_task", u_task);
-		quadShader->SetFloat("u_time", time);
-		quadShader->SetTexture("u_texture", texture);
-
-		quad.Render();
-
-		quadShader->Disable();
+		entity2.Render(uniformData);
 	}
 	
 }

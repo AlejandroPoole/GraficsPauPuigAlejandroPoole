@@ -10,33 +10,41 @@
 #include "main/includes.h"
 #include "shader.h"
 #include "texture.h"
-#include "Entity.h"
+
+
+
+typedef struct {
+	Matrix44 viewProjection;
+	Matrix44 modelMatrix;
+	Vector3 Ia;
+	Texture* texture;
+	Vector3 Intensity;
+}sUniformData;
+
 
 class Material
 {
+	
+
+public:
+	Shader* shader;
 	Vector3 Kd;
 	Vector3 Ks;
 	Vector3 Ka;
 	float shininess;
-	Vector3 materialColor;
-	Texture materialTexture;
-
-public:
-	Material() {};
+	//Vector3 materialColor;
+	Texture* materialTexture;
 
 
-	void Enable(const sUniformData& uniformData);
+
+
+	void Enable(const sUniformData &uniformData);
 	void Disable();
 };
 
-struct sLight {
-	Vector2 Position;
+typedef struct {
+	Vector3 Position;
 	Vector3 intensity;
-};
+}sLight;
 
-struct sUniformData {
-	Matrix44 viewProjection;
-	Matrix44 modelMatrix;
-	Material material;
-	Vector3 Ia;
-};
+

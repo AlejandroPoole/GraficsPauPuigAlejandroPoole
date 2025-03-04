@@ -9,16 +9,20 @@
 #include <sys/stat.h>
 #include <cstring>
 
-void Material::Enable(const sUniformData &uniformData){
-	ka = { 0.1, 0.1, 0.1 };
-	kd = { 0.6, 0.6, 0.6 };
-	ks = { 0.3, 0.3, 0.3 };
-	shininess = 100;
+void Material::Enable(const sUniformData& uniformData) {
+	//Material properties
+	shader->Enable();
+	shader->SetVector3("u_kd", Kd);
+	shader->SetVector3("u_ks", Ks);
+	shader->SetVector3("u_ka",Ka);
+	shader->SetFloat("u_shininess", shininess);
+	shader->SetMatrix44("u_model", uniformData.modelMatrix);
+	shader->SetMatrix44("u_viewprojection", uniformData.viewProjection);
+	shader->SetTexture("u_texture", uniformData.texture);
+	shader->SetVector3("u_Ia", uniformData.Ia);
+	
 }
 
 void Material::Disable(){
-	ambient = { 0,0,0};
-	diffuse = { 0,0,0};
-	specular = { 0,0,0};
-	shininess = 0;
+	shader->Disable();
 }

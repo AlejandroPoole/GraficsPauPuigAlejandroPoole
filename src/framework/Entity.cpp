@@ -1,12 +1,15 @@
 #include "Entity.h"
 #include "shader.h"
 
+
+//Render LAB5
 void Entity::Render(sUniformData uniformData) {
-	meshShader->SetMatrix44("u_model", uniformData.modelMatrix);
-	meshShader->SetMatrix44("u_viewprojection", uniformData.viewProjection);
-	meshShader->SetTexture("u_texture", texture2);
+	entityMaterial.Enable(uniformData);
 	mesh->Render();
+	entityMaterial.Disable();
 }
+
+//Render Lab4
 void Entity::Render(Camera* camera) {
 	meshShader->SetMatrix44("u_model", model);
 	meshShader->SetMatrix44("u_viewprojection", camera->viewprojection_matrix);
