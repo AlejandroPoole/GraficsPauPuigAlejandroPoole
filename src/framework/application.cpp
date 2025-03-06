@@ -56,6 +56,8 @@ void Application::Init(void)
 	entity[1].entityMaterial.Ks = {0.2, 0.2, 0.2};
 	entity[1].entityMaterial.shininess = 50;
 
+	
+
 	//LAB4
 	Matrix44 mymodel3;
 	Mesh* mymesh3 = new Mesh();
@@ -69,6 +71,11 @@ void Application::Init(void)
 	entity[2].entityMaterial.Ks = {0.2, 0.2, 0.2};
 	entity[2].entityMaterial.shininess = 50;
 
+	
+
+	entity[2].entityMaterial.shader->SetFloat("u_colorTexture", u_colorTexture);
+	/*entity[2].entityMaterial.shader->SetFloat("u_normalTexture", u_normalTexture);
+	entity[2].entityMaterial.shader->SetFloat("u_specularTexture", u_specularTexture);*/
 
 
 	//CREAR CAMARA
@@ -81,9 +88,10 @@ void Application::Init(void)
 	myCamera.fov = PI / 4;
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 	//lights[0] = {(0.8,10,0), (100,100,100)};
-	lights[0].intensity = { 1, 1, 0 };
-	lights[0].Position = { 0, 0, 1 };
-	Ia = {0.05, 0.05, 0.05};
+	lights[0].intensity = { 1, 1, 1 };
+	lights[0].Position = { 0.7, 0, 0.5 };
+	Ia = { 0.05, 0.05, 0.05 };
+	
 	
 }
 
@@ -147,7 +155,6 @@ void Application::Render(void) {
 		glDepthFunc(GL_LEQUAL);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		
 		switch ((int)u_mode)
 		{
 		case 7: entity[1].Render(uniformData[0]);break;
@@ -179,7 +186,10 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	//				else if (property == 3 && myCamera.fov>PI/18) {myCamera.fov -= PI/18;}break;
 	case SDLK_a: u_mode = 1.00; break;
 	case SDLK_b: u_mode = 2.00; break;
-	case SDLK_c: u_mode = 3.00; break;
+	case SDLK_c: u_mode = 3.00; if (u_colorTexture == 0.00) { u_colorTexture = 1.00; }
+			   else { u_colorTexture = 0.00; }
+		break;
+
 	case SDLK_d: u_mode = 4.00; break;
 	case SDLK_e: u_mode = 5.00; break;
 	case SDLK_f: u_mode = 6.00; break;
@@ -190,6 +200,11 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	case SDLK_2: u_task = 2.00; break;
 	case SDLK_3: u_task = 3.00; break;
 	case SDLK_4: u_task = 4.00; break;
+
+	case SDLK_s: if (u_specularTexture == 0.00) { u_specularTexture = 1.00; }
+			   else { u_specularTexture = 0.00; }; break;
+	case SDLK_n:if (u_normalTexture == 0.00) { u_normalTexture = 1.00; }
+			   else { u_normalTexture = 0.00; } break;
 	
 	case SDLK_l: if (u_lab == 4.00) { u_lab = 5.00; }
 			   else { u_lab = 4.00; }; break;

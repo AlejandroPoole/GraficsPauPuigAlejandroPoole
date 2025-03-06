@@ -93,6 +93,10 @@ public:
 	Vector3 Ia;
 	sLight lights[10];
 	sUniformData uniformData[2];
+
+	float u_normalTexture = 0.0;
+	float u_specularTexture = 0.0;
+	float u_colorTexture = 0.0;
 	// Input
 	const Uint8* keystate;
 	int mouse_state; // Tells which buttons are pressed
