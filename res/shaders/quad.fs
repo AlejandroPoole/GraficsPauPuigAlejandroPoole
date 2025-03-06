@@ -123,7 +123,9 @@ void main()
 	}
 	else if (u_task == 3){
 		if(u_mode == 1.0){
-			vec2 new_uv = vec2(v_uv.y, v_uv.x);
+			vec2 new_uv = vec2(v_uv.x, v_uv.y);
+			new_uv.x += 0.25*sin(v_uv.y*5 + u_time);
+			new_uv.y += 0.25*sin(v_uv.x*5 + u_time);
 			vec4 texture_color = texture2D(u_texture, new_uv);
 			gl_FragColor = texture_color;
 		}
