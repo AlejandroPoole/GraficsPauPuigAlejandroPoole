@@ -19,6 +19,8 @@ typedef struct {
 	Vector3 Ia;
 	Texture* texture;
 	Vector3 Intensity;
+	Vector3 position;
+	Vector3 eye;
 }sUniformData;
 
 
@@ -40,6 +42,7 @@ public:
 
 	void Enable(const sUniformData &uniformData);
 	void Disable();
+
 };
 
 typedef struct {

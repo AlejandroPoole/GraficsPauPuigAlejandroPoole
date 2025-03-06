@@ -94,7 +94,7 @@ public:
 
 	//LAB 5
 	Vector3 Ia;
-	sLight lights[100];
+	sLight lights[10];
 	sUniformData uniformData;
 	// Input
 	const Uint8* keystate;

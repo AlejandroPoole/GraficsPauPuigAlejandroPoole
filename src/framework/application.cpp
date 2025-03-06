@@ -74,7 +74,10 @@ void Application::Init(void)
 	entity2.mesh = mymesh2;
 	entity2.entityMaterial.materialTexture = Texture::Get("../res/textures/lee_color_specular.tga");
 	entity2.entityMaterial.shader = Shader::Get("../res/shaders/gouraud.vs", "../res/shaders/gouraud.fs");
-
+	entity2.entityMaterial.Kd = (0.5, 1, 1);
+	entity2.entityMaterial.Ka = (0.3, 1, 1);
+	entity2.entityMaterial.Ks = (1, 0.6, 0.2);
+	entity2.entityMaterial.shininess = 30;
 
 	//LAB4
 	entity4.meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
@@ -93,8 +96,10 @@ void Application::Init(void)
 	myCamera.near_plane = 0.01;
 	myCamera.fov = PI / 4;
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
-	lights[0] = {(0.8,0.5, 0.5), (0,1,0)};
-	Ia = { 0.2,0.2,0.2 };
+	//lights[0] = {(0.8,10,0), (100,100,100)};
+	lights[0].intensity = (100, 100, 100);
+	lights[0].Position = (0, 10, 5);
+	Ia = (0.05,0.05,0.05);
 	
 }
 
@@ -109,7 +114,7 @@ void Application::Render(void) {
 
 	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
-	uniformData = {myCamera.viewprojection_matrix, entity2.model,Ia, entity2.entityMaterial.materialTexture, lights[0].intensity};
+	uniformData = {myCamera.viewprojection_matrix, entity2.model,Ia, entity2.entityMaterial.materialTexture, lights[0].intensity, lights[0].Position, myCamera.eye};
 	//
 	//if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV,Color::WHITE); }
 	//
@@ -154,7 +159,7 @@ void Application::Render(void) {
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		
 		entity2.Render(uniformData);
 	}
 	

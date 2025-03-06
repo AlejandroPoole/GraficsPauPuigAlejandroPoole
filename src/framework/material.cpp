@@ -21,6 +21,9 @@ void Material::Enable(const sUniformData& uniformData) {
 	shader->SetTexture("u_texture", uniformData.texture);
 	shader->SetVector3("u_Ia", uniformData.Ia);
 	shader->SetVector3("u_intensity", uniformData.Intensity);
+	shader->SetVector3("u_position", uniformData.position);
+	shader->SetVector3("u_eye", uniformData.eye);
+	
 	
 }
 
