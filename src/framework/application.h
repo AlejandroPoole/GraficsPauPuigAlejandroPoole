@@ -66,10 +66,7 @@ public:
 
 	//LAB2
 	
-	Entity entity;
-	Entity entity2;
-	Entity entity3;
-	Entity entity4;
+	Entity entity[3];
 	Camera myCamera;
 	bool click = false;
 	FloatImage zBuffer;
@@ -95,7 +92,7 @@ public:
 	//LAB 5
 	Vector3 Ia;
 	sLight lights[10];
-	sUniformData uniformData;
+	sUniformData uniformData[2];
 	// Input
 	const Uint8* keystate;
 	int mouse_state; // Tells which buttons are pressed

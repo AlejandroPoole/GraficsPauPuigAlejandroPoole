@@ -27,65 +27,49 @@ Application::~Application()
 
 void Application::Init(void)
 {
-	//LAB2
-	/*
-	Matrix44 mymodel;
-	Mesh* mymesh = new Mesh();
-	mymesh->LoadOBJ("..//res/meshes/lee.obj");
-	entity.model = mymodel;
-	entity.mesh = mymesh;
+
+	quadShader = Shader::Get("../res/shaders/quad.vs", "../res/shaders/quad.fs");
+	quad.CreateQuad();
+	texture = Texture::Get("../res/images/fruits.png");
 	
+
+	Matrix44 mymodel4;
+	Mesh* mymesh4 = new Mesh();
+	mymesh4->LoadOBJ("..//res/meshes/lee.obj");
+	entity[0].model = mymodel4;
+	entity[0].mesh = mymesh4;
+	entity[0].texture2 = Texture::Get("../res/textures/lee_color_specular.tga");
+	entity[0].n = entity[0].texture;
+	entity[0].zbufferTemp = &zBuffer;
+	entity[0].meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
+
+
 	Matrix44 mymodel2;
 	Mesh* mymesh2 = new Mesh();
 	mymesh2->LoadOBJ("..//res/meshes/lee.obj");
-	entity2.model = mymodel2;
-	entity2.mesh = mymesh2;
+	entity[1].model = mymodel2;
+	entity[1].mesh = mymesh2;
+	entity[1].entityMaterial.materialTexture = Texture::Get("../res/textures/lee_color_specular.tga");
+	entity[1].entityMaterial.shader = Shader::Get("../res/shaders/gouraud.vs", "../res/shaders/gouraud.fs");
+	entity[1].entityMaterial.Kd = {1, 0.8, 0.6};
+	entity[1].entityMaterial.Ka = {1, 0.8, 0.6};
+	entity[1].entityMaterial.Ks = {0.2, 0.2, 0.2};
+	entity[1].entityMaterial.shininess = 50;
 
+	//LAB4
 	Matrix44 mymodel3;
 	Mesh* mymesh3 = new Mesh();
 	mymesh3->LoadOBJ("..//res/meshes/lee.obj");
-	entity3.model = mymodel3;
-	entity3.mesh = mymesh3;
+	entity[2].model = mymodel3;
+	entity[2].mesh = mymesh3;
+	entity[2].entityMaterial.materialTexture = Texture::Get("../res/textures/lee_color_specular.tga");
+	entity[2].entityMaterial.shader = Shader::Get("../res/shaders/phong.vs", "../res/shaders/phong.fs");
+	entity[2].entityMaterial.Kd = {1, 0.8, 0.6};
+	entity[2].entityMaterial.Ka = {1, 0.8, 0.6};
+	entity[2].entityMaterial.Ks = {0.2, 0.2, 0.2};
+	entity[2].entityMaterial.shininess = 50;
 
-	Matrix44 mymodel4;
-	Mesh* mymesh4 = new Mesh();
-	mymesh4->LoadOBJ("..//res/meshes/lee.obj");
-	entity4.model = mymodel4;
-	entity4.mesh = mymesh4;
-	
-	Image *mytexture = new Image();
-	mytexture->LoadTGA("..//res/textures/lee_color_specular.tga",true);
-	entity4.texture = mytexture;
-	*/
 
-	Matrix44 mymodel4;
-	Mesh* mymesh4 = new Mesh();
-	mymesh4->LoadOBJ("..//res/meshes/lee.obj");
-	entity4.model = mymodel4;
-	entity4.mesh = mymesh4;
-	entity4.texture2 = Texture::Get("../res/textures/lee_color_specular.tga");
-	entity4.n = entity4.texture;
-	entity4.zbufferTemp = &zBuffer;
-
-	Matrix44 mymodel2;
-	Mesh* mymesh2 = new Mesh();
-	mymesh2->LoadOBJ("..//res/meshes/lee.obj");
-	entity2.model = mymodel2;
-	entity2.mesh = mymesh2;
-	entity2.entityMaterial.materialTexture = Texture::Get("../res/textures/lee_color_specular.tga");
-	entity2.entityMaterial.shader = Shader::Get("../res/shaders/gouraud.vs", "../res/shaders/gouraud.fs");
-	entity2.entityMaterial.Kd = (0.5, 1, 1);
-	entity2.entityMaterial.Ka = (0.3, 1, 1);
-	entity2.entityMaterial.Ks = (1, 0.6, 0.2);
-	entity2.entityMaterial.shininess = 30;
-
-	//LAB4
-	entity4.meshShader = Shader::Get("../res/shaders/simple.vs", "../res/shaders/simple.fs");
-	quadShader = Shader::Get("../res/shaders/quad.vs", "../res/shaders/quad.fs");
-	texture = Texture::Get("../res/images/fruits.png");
-	quad.CreateQuad();
-
-	
 
 	//CREAR CAMARA
 	myCamera.eye = { 0,0,1 };
@@ -97,9 +81,9 @@ void Application::Init(void)
 	myCamera.fov = PI / 4;
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 	//lights[0] = {(0.8,10,0), (100,100,100)};
-	lights[0].intensity = (100, 100, 100);
-	lights[0].Position = (0, 10, 5);
-	Ia = (0.05,0.05,0.05);
+	lights[0].intensity = { 1, 1, 0 };
+	lights[0].Position = { 0, 0, 1 };
+	Ia = {0.05, 0.05, 0.05};
 	
 }
 
@@ -114,7 +98,10 @@ void Application::Render(void) {
 
 	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
-	uniformData = {myCamera.viewprojection_matrix, entity2.model,Ia, entity2.entityMaterial.materialTexture, lights[0].intensity, lights[0].Position, myCamera.eye};
+	//Gouroud
+	uniformData[0] = {myCamera.viewprojection_matrix, entity[1].model,Ia, entity[1].entityMaterial.materialTexture, lights[0].intensity, lights[0].Position, myCamera.eye};
+	//Phong
+	uniformData[1] = { myCamera.viewprojection_matrix, entity[2].model,Ia, entity[2].entityMaterial.materialTexture, lights[0].intensity, lights[0].Position, myCamera.eye};
 	//
 	//if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV,Color::WHITE); }
 	//
@@ -134,12 +121,12 @@ void Application::Render(void) {
 			glDepthFunc(GL_LEQUAL);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			entity4.meshShader->Enable();
+			entity[0].meshShader->Enable();
 			//entity4.meshShader->SetMatrix44("u_model", entity4.model);
 			//entity4.meshShader->SetMatrix44("u_viewprojection", myCamera.viewprojection_matrix);
 			//entity4.meshShader->SetFloat("u_time", time);
-			entity4.Render(&myCamera);
-			entity4.meshShader->Disable();
+			entity[0].Render(&myCamera);
+			entity[0].meshShader->Disable();
 		}
 		else {
 
@@ -160,7 +147,12 @@ void Application::Render(void) {
 		glDepthFunc(GL_LEQUAL);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		entity2.Render(uniformData);
+		
+		switch ((int)u_mode)
+		{
+		case 7: entity[1].Render(uniformData[0]);break;
+		case 8: entity[2].Render(uniformData[1]);break;
+		}
 	}
 	
 }
@@ -191,6 +183,8 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	case SDLK_d: u_mode = 4.00; break;
 	case SDLK_e: u_mode = 5.00; break;
 	case SDLK_f: u_mode = 6.00; break;
+	case SDLK_g: u_mode = 7.00; break;
+	case SDLK_p: u_mode = 8.00; break;
 	
 	case SDLK_1: u_task = 1.00; break;
 	case SDLK_2: u_task = 2.00; break;

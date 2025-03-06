@@ -4,6 +4,7 @@
 
 //Render LAB5
 void Entity::Render(sUniformData uniformData) {
+	uniformData.modelMatrix = model;
 	entityMaterial.Enable(uniformData);
 	mesh->Render();
 	entityMaterial.Disable();
