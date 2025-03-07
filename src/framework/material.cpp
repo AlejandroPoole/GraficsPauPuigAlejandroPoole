@@ -18,11 +18,16 @@ void Material::Enable(const sUniformData& uniformData) {
 	shader->SetFloat("u_shininess", shininess);
 	shader->SetMatrix44("u_model", uniformData.modelMatrix);
 	shader->SetMatrix44("u_viewprojection", uniformData.viewProjection);
-	shader->SetTexture("u_texture", uniformData.texture);
+	shader->SetTexture("u_texture", materialTexture[0]);
+	shader->SetTexture("u_textureNorm", materialTexture[1]);
 	shader->SetVector3("u_Ia", uniformData.Ia);
 	shader->SetVector3("u_intensity", uniformData.Intensity);
 	shader->SetVector3("u_position", uniformData.position);
 	shader->SetVector3("u_eye", uniformData.eye);
+	shader->SetFloat("u_colorTexture", uniformData.u_colorT);
+	shader->SetFloat("u_normalTexture", uniformData.u_normalT);
+	shader->SetFloat("u_specularTexture", uniformData.u_specularT);
+
 	
 	
 }

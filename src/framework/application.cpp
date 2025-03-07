@@ -49,7 +49,7 @@ void Application::Init(void)
 	mymesh2->LoadOBJ("..//res/meshes/lee.obj");
 	entity[1].model = mymodel2;
 	entity[1].mesh = mymesh2;
-	entity[1].entityMaterial.materialTexture = Texture::Get("../res/textures/lee_color_specular.tga");
+	entity[1].entityMaterial.materialTexture[0] = Texture::Get("../res/textures/lee_color_specular.tga");
 	entity[1].entityMaterial.shader = Shader::Get("../res/shaders/gouraud.vs", "../res/shaders/gouraud.fs");
 	entity[1].entityMaterial.Kd = {1, 0.8, 0.6};
 	entity[1].entityMaterial.Ka = {1, 0.8, 0.6};
@@ -64,7 +64,8 @@ void Application::Init(void)
 	mymesh3->LoadOBJ("..//res/meshes/lee.obj");
 	entity[2].model = mymodel3;
 	entity[2].mesh = mymesh3;
-	entity[2].entityMaterial.materialTexture = Texture::Get("../res/textures/lee_color_specular.tga");
+	entity[2].entityMaterial.materialTexture[0] = Texture::Get("../res/textures/lee_color_specular.tga");
+	entity[2].entityMaterial.materialTexture[1] = Texture::Get("../res/textures/lee_normal.tga");
 	entity[2].entityMaterial.shader = Shader::Get("../res/shaders/phong.vs", "../res/shaders/phong.fs");
 	entity[2].entityMaterial.Kd = {1, 0.8, 0.6};
 	entity[2].entityMaterial.Ka = {1, 0.8, 0.6};
@@ -73,9 +74,7 @@ void Application::Init(void)
 
 	
 
-	entity[2].entityMaterial.shader->SetFloat("u_colorTexture", u_colorTexture);
-	/*entity[2].entityMaterial.shader->SetFloat("u_normalTexture", u_normalTexture);
-	entity[2].entityMaterial.shader->SetFloat("u_specularTexture", u_specularTexture);*/
+	
 
 
 	//CREAR CAMARA
@@ -107,9 +106,10 @@ void Application::Render(void) {
 	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 	//Gouroud
-	uniformData[0] = {myCamera.viewprojection_matrix, entity[1].model,Ia, entity[1].entityMaterial.materialTexture, lights[0].intensity, lights[0].Position, myCamera.eye};
+	uniformData[0] = {myCamera.viewprojection_matrix, entity[1].model,Ia, lights[0].intensity, lights[0].Position, myCamera.eye};
 	//Phong
-	uniformData[1] = { myCamera.viewprojection_matrix, entity[2].model,Ia, entity[2].entityMaterial.materialTexture, lights[0].intensity, lights[0].Position, myCamera.eye};
+	uniformData[1] = { myCamera.viewprojection_matrix, entity[2].model,Ia,lights[0].intensity, lights[0].Position, myCamera.eye, u_colorTexture, u_normalTexture, u_specularTexture};
+	//
 	//
 	//if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV,Color::WHITE); }
 	//
@@ -186,7 +186,7 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	//				else if (property == 3 && myCamera.fov>PI/18) {myCamera.fov -= PI/18;}break;
 	case SDLK_a: u_mode = 1.00; break;
 	case SDLK_b: u_mode = 2.00; break;
-	case SDLK_c: u_mode = 3.00; if (u_colorTexture == 0.00) { u_colorTexture = 1.00; }
+	case SDLK_c: u_normalTexture = 0; u_specularTexture = 0;if (u_lab == 4) { u_mode = 3.00; } if (u_colorTexture == 0.00) { u_colorTexture = 1.00; }
 			   else { u_colorTexture = 0.00; }
 		break;
 
@@ -201,9 +201,9 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	case SDLK_3: u_task = 3.00; break;
 	case SDLK_4: u_task = 4.00; break;
 
-	case SDLK_s: if (u_specularTexture == 0.00) { u_specularTexture = 1.00; }
-			   else { u_specularTexture = 0.00; }; break;
-	case SDLK_n:if (u_normalTexture == 0.00) { u_normalTexture = 1.00; }
+	case SDLK_s: u_normalTexture = 0; u_colorTexture = 0; if (u_specularTexture == 0.00) { u_specularTexture = 1.00; }
+			   else { u_specularTexture = 0.00;} break;
+	case SDLK_n: u_specularTexture = 0; u_colorTexture = 0; if (u_normalTexture == 0.00) { u_normalTexture = 1.00; }
 			   else { u_normalTexture = 0.00; } break;
 	
 	case SDLK_l: if (u_lab == 4.00) { u_lab = 5.00; }

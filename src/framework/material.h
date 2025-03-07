@@ -17,10 +17,12 @@ typedef struct {
 	Matrix44 viewProjection;
 	Matrix44 modelMatrix;
 	Vector3 Ia;
-	Texture* texture;
 	Vector3 Intensity;
 	Vector3 position;
 	Vector3 eye;
+	float u_colorT;
+	float u_normalT;
+	float u_specularT;
 }sUniformData;
 
 
@@ -35,10 +37,7 @@ public:
 	Vector3 Ka;
 	float shininess;
 	//Vector3 materialColor;
-	Texture* materialTexture;
-
-
-
+	Texture* materialTexture[2];
 
 	void Enable(const sUniformData &uniformData);
 	void Disable();
