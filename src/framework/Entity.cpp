@@ -5,7 +5,28 @@
 //Render LAB5
 void Entity::Render(sUniformData uniformData) {
 	uniformData.modelMatrix = model;
-	entityMaterial.Enable(uniformData);
+	glDepthFunc(GL_LEQUAL);
+	glDisable(GL_BLEND);
+	entityMaterial.Enable(uniformData, 0);
+	mesh->Render();
+	// set uniforms 
+	if (uniformData.lights.size() > 1) {
+		for (int i = 1; i < 2; i++) {
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ONE);
+			entityMaterial.Enable(uniformData, i);
+			mesh->Render();
+			
+		}
+	}
+
+	entityMaterial.Disable();
+}
+
+void Entity::Render(sUniformDataGouraud uniformDataG) {
+	glDisable(GL_BLEND);
+	uniformDataG.modelMatrix = model;
+	entityMaterial.Enable(uniformDataG);
 	mesh->Render();
 	entityMaterial.Disable();
 }

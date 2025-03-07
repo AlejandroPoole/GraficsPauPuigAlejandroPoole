@@ -31,6 +31,7 @@ public:
 	void Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer, bool zbufferOn, bool InterpolatedUV, const Color& c);
 	void Render(sUniformData uniformData);
 	void Render(Camera* camera);
+	void Render(sUniformDataGouraud uniformData);
 	void Update(float seconds_elapsed);
 	void Update2(float seconds_elapsed);
 	void Update3(float seconds_elapsed);

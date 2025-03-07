@@ -87,9 +87,15 @@ void Application::Init(void)
 	myCamera.fov = PI / 4;
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 	//lights[0] = {(0.8,10,0), (100,100,100)};
-	lights[0].intensity = { 1, 1, 1 };
-	lights[0].Position = { 0.7, 0, 0.5 };
+	light1.intensity = { 0, 1, 0 };
+	light1.Position = { 0.9, 0, 0.5 };
+
+	light2.intensity = { 1,0,0};
+	light2.Position = { 0.1,1,1 };
 	Ia = { 0.05, 0.05, 0.05 };
+	lights.push_back(light1);
+	lights.push_back(light2);
+
 	
 	
 }
@@ -97,29 +103,17 @@ void Application::Init(void)
 // Render one frame
 void Application::Render(void) {
 
-	//zBuffer.width = framebuffer.width;
-	//zBuffer.height = framebuffer.height;
-	//zBuffer.pixels = new float[framebuffer.width * framebuffer.height];
-	//zBuffer.Fill(FLT_MAX);
-	//framebuffer.Fill(Color::BLACK);
+	
 
 	myCamera.LookAt(myCamera.eye, myCamera.center, myCamera.up);
 	myCamera.SetPerspective(myCamera.fov, window_width / window_height, myCamera.near_plane, myCamera.far_plane);
 	//Gouroud
-	uniformData[0] = {myCamera.viewprojection_matrix, entity[1].model,Ia, lights[0].intensity, lights[0].Position, myCamera.eye};
+	uD = { myCamera.viewprojection_matrix, entity[1].model,Ia, lights[0].intensity, lights[0].Position, myCamera.eye };
 	//Phong
-	uniformData[1] = { myCamera.viewprojection_matrix, entity[2].model,Ia,lights[0].intensity, lights[0].Position, myCamera.eye, u_colorTexture, u_normalTexture, u_specularTexture};
-	//
-	//
-	//if (mode == 1) { entity4.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn,InterpolatedUV,Color::WHITE); }
-	//
-	//else if (mode == 2) {
-	//	entity.Render(&framebuffer, &myCamera, &zBuffer,zBufferOn, InterpolatedUV, Color::WHITE);
-	//	entity2.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn,InterpolatedUV,Color::GREEN);
-	//	entity3.Render(&framebuffer, &myCamera,&zBuffer,zBufferOn, InterpolatedUV,Color::BLUE);
-	//}
+	uniformData[1] = {myCamera.viewprojection_matrix, entity[2].model,Ia, myCamera.eye, u_colorTexture, u_normalTexture, u_specularTexture, lights};
 
-	//framebuffer.Render();
+	//
+	
 
 	//LAB4
 	if (u_lab == 4.0) {
@@ -154,10 +148,11 @@ void Application::Render(void) {
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+
+	
 		switch ((int)u_mode)
 		{
-		case 7: entity[1].Render(uniformData[0]);break;
+		case 7: entity[1].Render(uD);break;
 		case 8: entity[2].Render(uniformData[1]);break;
 		}
 	}
@@ -196,8 +191,14 @@ void Application::OnKeyPressed(SDL_KeyboardEvent event)
 	case SDLK_g: u_mode = 7.00; break;
 	case SDLK_p: u_mode = 8.00; break;
 	
-	case SDLK_1: u_task = 1.00; break;
-	case SDLK_2: u_task = 2.00; break;
+	case SDLK_1: if (u_lab == 4.00) { u_task = 1.00; }
+			   else if (u_lab == 5.00 && uniformData[1].lights.size() > 1) {
+		std::vector<sLight>Nlight; Nlight.push_back(light1); uniformData[1].lights = Nlight;
+	} break;
+	case SDLK_2:  if (u_lab == 4.00) { u_task = 2.00; }
+			   else if (u_lab == 5.00 && uniformData[1].lights.size() < 2) {
+		std::vector<sLight>Nlight; Nlight.push_back(light1); Nlight.push_back(light2); lights = Nlight;
+	} break;
 	case SDLK_3: u_task = 3.00; break;
 	case SDLK_4: u_task = 4.00; break;
 

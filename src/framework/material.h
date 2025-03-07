@@ -12,6 +12,23 @@
 #include "texture.h"
 
 
+typedef struct {
+	Vector3 Position;
+	Vector3 intensity;
+}sLight;
+
+
+typedef struct {
+	Matrix44 viewProjection;
+	Matrix44 modelMatrix;
+	Vector3 Ia;
+	Vector3 eye;
+	float u_colorT;
+	float u_normalT;
+	float u_specularT;
+	std::vector<sLight> lights;
+
+}sUniformData;
 
 typedef struct {
 	Matrix44 viewProjection;
@@ -20,10 +37,11 @@ typedef struct {
 	Vector3 Intensity;
 	Vector3 position;
 	Vector3 eye;
-	float u_colorT;
-	float u_normalT;
-	float u_specularT;
-}sUniformData;
+	
+
+}sUniformDataGouraud;
+
+
 
 
 class Material
@@ -39,14 +57,10 @@ public:
 	//Vector3 materialColor;
 	Texture* materialTexture[2];
 
-	void Enable(const sUniformData &uniformData);
+	void Enable(const sUniformData &uniformData, int lightIndex);
+	void Enable(const sUniformDataGouraud & uniformData);
 	void Disable();
 
 };
-
-typedef struct {
-	Vector3 Position;
-	Vector3 intensity;
-}sLight;
 
 

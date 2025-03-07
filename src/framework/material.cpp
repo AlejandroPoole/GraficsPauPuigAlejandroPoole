@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include <cstring>
 
-void Material::Enable(const sUniformData& uniformData) {
+void Material::Enable(const sUniformData& uniformData, int lightIndex) {
 	//Material properties
 	shader->Enable();
 	shader->SetVector3("u_kd", Kd);
@@ -21,8 +21,8 @@ void Material::Enable(const sUniformData& uniformData) {
 	shader->SetTexture("u_texture", materialTexture[0]);
 	shader->SetTexture("u_textureNorm", materialTexture[1]);
 	shader->SetVector3("u_Ia", uniformData.Ia);
-	shader->SetVector3("u_intensity", uniformData.Intensity);
-	shader->SetVector3("u_position", uniformData.position);
+	shader->SetVector3("u_intensity", uniformData.lights[lightIndex].intensity);
+	shader->SetVector3("u_position", uniformData.lights[lightIndex].Position);
 	shader->SetVector3("u_eye", uniformData.eye);
 	shader->SetFloat("u_colorTexture", uniformData.u_colorT);
 	shader->SetFloat("u_normalTexture", uniformData.u_normalT);
@@ -30,6 +30,24 @@ void Material::Enable(const sUniformData& uniformData) {
 
 	
 	
+}
+
+void Material::Enable(const sUniformDataGouraud& uniformData) {
+	//Material properties
+	shader->Enable();
+	shader->SetVector3("u_kd", Kd);
+	shader->SetVector3("u_ks", Ks);
+	shader->SetVector3("u_ka", Ka);
+	shader->SetFloat("u_shininess", shininess);
+	shader->SetMatrix44("u_model", uniformData.modelMatrix);
+	shader->SetMatrix44("u_viewprojection", uniformData.viewProjection);
+	shader->SetTexture("u_texture", materialTexture[0]);
+	shader->SetVector3("u_Ia", uniformData.Ia);
+	shader->SetVector3("u_intensity", uniformData.Intensity);
+	shader->SetVector3("u_position", uniformData.position);
+	shader->SetVector3("u_eye", uniformData.eye);
+
+
 }
 
 void Material::Disable(){

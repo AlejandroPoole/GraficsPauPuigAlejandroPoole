@@ -91,8 +91,12 @@ public:
 
 	//LAB 5
 	Vector3 Ia;
-	sLight lights[10];
+	sLight light1;
+	sLight light2;
+	std::vector<sLight> lights;
 	sUniformData uniformData[2];
+	sUniformDataGouraud uD;
+	bool twoL = true;
 
 	float u_normalTexture = 0.0;
 	float u_specularTexture = 0.0;
