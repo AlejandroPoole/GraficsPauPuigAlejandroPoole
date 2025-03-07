@@ -11,9 +11,6 @@ uniform vec3 u_Ia;
 uniform vec3 u_intensity;
 uniform vec3 u_position;
 uniform vec3 u_eye;
-uniform float u_colorTexture;
-uniform float u_specularTexture;
-uniform float u_normalTexture;
 // Variables to pass to the fragment shader
 varying vec2 v_uv;
 varying vec3 v_world_position;

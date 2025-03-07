@@ -91,7 +91,7 @@ void Application::Init(void)
 	light1.Position = { 0.9, 0, 0.5 };
 
 	light2.intensity = { 1,0,0};
-	light2.Position = { 0.1,1,1 };
+	light2.Position = { 0.1,0,1 };
 	Ia = { 0.05, 0.05, 0.05 };
 	lights.push_back(light1);
 	lights.push_back(light2);
